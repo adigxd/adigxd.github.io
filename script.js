@@ -397,7 +397,7 @@ function updateRollTimer() {
 
 function getHighlightColor() {
     if (currentTheme === 'blue_theme') return '#2196F3';
-    if (currentTheme === 'mint_theme') return '#4CAF50';
+    if (currentTheme === 'mint_theme') return '#7FDBB6';
     if (currentTheme === 'gold_theme') return '#FFD700';
     return '#ff6b35'; // default
 }

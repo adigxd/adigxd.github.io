@@ -576,46 +576,54 @@ body.theme-blue .promo-input:focus {
     border-color: #2196F3;
 }
 
+body.theme-blue .slot-window {
+    border-color: #1976D2;
+}
+
 body.theme-mint .welcome-header {
-    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    background: linear-gradient(45deg, #7FDBB6, #A8E6CF);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
 body.theme-mint .subheader {
-    color: #4CAF50;
+    color: #7FDBB6;
 }
 
 body.theme-mint .nav-item.active {
-    border-right-color: #4CAF50;
+    border-right-color: #7FDBB6;
 }
 
 body.theme-mint .theme-toggle.active {
-    border-color: #4CAF50;
-    color: #4CAF50;
+    border-color: #7FDBB6;
+    color: #7FDBB6;
 }
 
 body.theme-mint .roll-button,
 body.theme-mint .buy-button,
 body.theme-mint .promo-button {
-    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    background: linear-gradient(45deg, #7FDBB6, #A8E6CF);
 }
 
 body.theme-mint .price {
-    color: #4CAF50;
+    color: #7FDBB6;
 }
 
 body.theme-mint .slot-machine {
-    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+    background: linear-gradient(45deg, #7FDBB6, #A8E6CF);
 }
 
 body.theme-mint .roll-result {
-    color: #4CAF50;
+    color: #7FDBB6;
 }
 
 body.theme-mint .promo-input:focus {
-    border-color: #4CAF50;
+    border-color: #7FDBB6;
+}
+
+body.theme-mint .slot-window {
+    border-color: #5BCA8F;
 }
 
 body.theme-gold .welcome-header {
@@ -658,6 +666,10 @@ body.theme-gold .roll-result {
 
 body.theme-gold .promo-input:focus {
     border-color: #FFD700;
+}
+
+body.theme-gold .slot-window {
+    border-color: #FFA500;
 }
 
 /* Responsive Design */
