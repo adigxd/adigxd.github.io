@@ -138,6 +138,12 @@ function rollSlotMachine() {
     
     const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
     
+    // Clear all slot items during roll
+    const slotItems = slotReel.querySelectorAll('.slot-item');
+    slotItems.forEach(item => {
+        item.textContent = '';
+    });
+    
     // Animate slot reel
     const itemHeight = 80;
     const totalItems = outcomes.length;
@@ -148,6 +154,14 @@ function rollSlotMachine() {
     
     // Wait for animation to complete
     setTimeout(() => {
+        // Show the winning text in the slot
+        const winningSlotItem = slotItems[randomIndex];
+        winningSlotItem.textContent = randomOutcome.text;
+        winningSlotItem.style.color = getHighlightColor();
+        winningSlotItem.style.fontSize = '24px';
+        winningSlotItem.style.fontWeight = 'bold';
+        winningSlotItem.style.transition = 'all 0.3s ease';
+        
         // Apply the result
         applyRollResult(randomOutcome);
         
@@ -156,12 +170,26 @@ function rollSlotMachine() {
         
         // Re-enable button and start cooldown
         isRolling = false;
-        rollCooldown = 30;
+        rollCooldown = 5;
         updateRollTimer();
+        
+        // Reset slot item after a delay
+        setTimeout(() => {
+            winningSlotItem.style.fontSize = '14px';
+            winningSlotItem.style.fontWeight = 'normal';
+            winningSlotItem.style.transition = 'all 0.3s ease';
+        }, 1000);
         
         // Reset slot reel
         setTimeout(() => {
             slotReel.style.transform = 'translateY(0)';
+            // Restore all slot items
+            slotItems.forEach((item, index) => {
+                item.textContent = outcomes[index].text;
+                item.style.color = '#333';
+                item.style.fontSize = '14px';
+                item.style.fontWeight = 'normal';
+            });
         }, 2000);
         
     }, 3000);
@@ -206,45 +234,36 @@ function applyRollResult(outcome) {
 function showRollResult(outcome) {
     const rollResult = document.getElementById('rollResult');
     let message = '';
-    let color = '#333';
     
     switch (outcome.action) {
         case 'add':
             message = `You won ${outcome.value} coins!`;
-            color = '#4CAF50';
             break;
         case 'multiply':
             message = `Your coins were multiplied by ${outcome.value}!`;
-            color = '#2196F3';
             break;
         case 'divide':
             message = `Your coins were divided by ${outcome.value}!`;
-            color = '#FF9800';
             break;
         case 'lose-all':
             message = 'You lost all your coins!';
-            color = '#f44336';
             break;
         case 'rate-add':
             message = `Your coin rate increased by ${outcome.value}!`;
-            color = '#9C27B0';
             break;
         case 'rate-multiply':
             message = `Your coin rate was multiplied by ${outcome.value}!`;
-            color = '#2196F3';
             break;
         case 'rate-divide':
             message = `Your coin rate was divided by ${outcome.value}!`;
-            color = '#FF9800';
             break;
         case 'rate-set':
             message = `Your coin rate was set to ${outcome.value}!`;
-            color = '#9C27B0';
             break;
     }
     
     rollResult.textContent = message;
-    rollResult.style.color = color;
+    rollResult.style.color = getHighlightColor();
     
     // Add animation
     rollResult.style.animation = 'none';
@@ -259,13 +278,20 @@ function updateRollTimer() {
     
     if (rollCooldown > 0) {
         rollButton.disabled = true;
-        rollButton.textContent = `Rolling... (${rollCooldown}s)`;
-        rollTimer.textContent = `Next roll in ${rollCooldown} seconds`;
+        rollButton.textContent = 'Roll';
+        rollTimer.textContent = '';
     } else {
         rollButton.disabled = false;
-        rollButton.textContent = 'ROLL!';
+        rollButton.textContent = 'Roll';
         rollTimer.textContent = '';
     }
+}
+
+function getHighlightColor() {
+    if (currentTheme === 'blue_theme') return '#2196F3';
+    if (currentTheme === 'mint_theme') return '#4CAF50';
+    if (currentTheme === 'gold_theme') return '#FFD700';
+    return '#ff6b35'; // default
 }
 
 // Shop System

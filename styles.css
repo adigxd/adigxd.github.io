@@ -211,7 +211,7 @@ body {
 .slot-machine {
     width: 200px;
     height: 300px;
-    background: linear-gradient(45deg, #333, #555);
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
@@ -262,7 +262,7 @@ body {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.roll-button:hover {
+.roll-button:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
 }
@@ -450,6 +450,10 @@ body.theme-blue .price {
     color: #2196F3;
 }
 
+body.theme-blue .slot-machine {
+    background: linear-gradient(45deg, #2196F3, #03A9F4);
+}
+
 body.theme-mint .welcome-header {
     background: linear-gradient(45deg, #4CAF50, #8BC34A);
     -webkit-background-clip: text;
@@ -479,6 +483,10 @@ body.theme-mint .price {
     color: #4CAF50;
 }
 
+body.theme-mint .slot-machine {
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
+}
+
 body.theme-gold .welcome-header {
     background: linear-gradient(45deg, #FFD700, #FFA500);
     -webkit-background-clip: text;
@@ -506,6 +514,10 @@ body.theme-gold .buy-button {
 
 body.theme-gold .price {
     color: #FFD700;
+}
+
+body.theme-gold .slot-machine {
+    background: linear-gradient(45deg, #FFD700, #FFA500);
 }
 
 /* Responsive Design */
