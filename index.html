@@ -38,26 +38,22 @@
             <h2 class="projects-header">Current Projects...</h2>
             
             <div class="projects-grid">
-                <div class="project-box">
+                <a href="https://github.com/adigxd/NextBI" target="_blank" class="project-box">
                     <i class="fab fa-react"></i>
                     <h3>NextBI</h3>
-                    <a href="https://github.com/adigxd/NextBI" target="_blank">View Project</a>
-                </div>
-                <div class="project-box">
+                </a>
+                <a href="https://github.com/adigxd/Voxelbulb" target="_blank" class="project-box">
                     <i class="fas fa-cube"></i>
                     <h3>Voxelbulb</h3>
-                    <a href="https://github.com/adigxd/Voxelbulb" target="_blank">View Project</a>
-                </div>
-                <div class="project-box">
+                </a>
+                <a href="https://github.com/adigxd/Arena" target="_blank" class="project-box">
                     <i class="fas fa-gamepad"></i>
                     <h3>Arena</h3>
-                    <a href="https://github.com/adigxd/Arena" target="_blank">View Project</a>
-                </div>
-                <div class="project-box">
+                </a>
+                <a href="https://github.com/adigxd/CareerTree-py" target="_blank" class="project-box">
                     <i class="fas fa-brain"></i>
                     <h3>Career Tree</h3>
-                    <a href="https://github.com/adigxd/CareerTree-py" target="_blank">View Project</a>
-                </div>
+                </a>
             </div>
         </div>
 
@@ -65,15 +61,18 @@
         <div id="wheel-page" class="page">
             <h1 class="wheel-header">Spin the Wheel!</h1>
             <div class="wheel-container">
-                <div class="wheel" id="wheel">
-                    <div class="wheel-segment" data-action="add" data-value="10">+10 Coins</div>
-                    <div class="wheel-segment" data-action="multiply" data-value="2">×2 Coins</div>
-                    <div class="wheel-segment" data-action="lose-all">Lose All</div>
-                    <div class="wheel-segment" data-action="divide" data-value="2">÷2 Coins</div>
-                    <div class="wheel-segment" data-action="rate" data-value="1">+1 Rate</div>
-                    <div class="wheel-segment" data-action="add" data-value="25">+25 Coins</div>
-                    <div class="wheel-segment" data-action="multiply" data-value="3">×3 Coins</div>
-                    <div class="wheel-segment" data-action="divide" data-value="3">÷3 Coins</div>
+                <div class="wheel-wrapper">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel" id="wheel">
+                        <div class="wheel-segment" data-action="add" data-value="10">+10 Coins</div>
+                        <div class="wheel-segment" data-action="multiply" data-value="2">×2 Coins</div>
+                        <div class="wheel-segment" data-action="lose-all">Lose All</div>
+                        <div class="wheel-segment" data-action="divide" data-value="2">÷2 Coins</div>
+                        <div class="wheel-segment" data-action="rate" data-value="1">+1 Rate</div>
+                        <div class="wheel-segment" data-action="add" data-value="25">+25 Coins</div>
+                        <div class="wheel-segment" data-action="multiply" data-value="3">×3 Coins</div>
+                        <div class="wheel-segment" data-action="divide" data-value="3">÷3 Coins</div>
+                    </div>
                 </div>
                 <button class="spin-button" id="spinButton">SPIN!</button>
             </div>

@@ -122,11 +122,6 @@ function spinWheel() {
         spinButton.disabled = false;
         spinButton.textContent = 'SPIN!';
         
-        // Reset wheel after a delay
-        setTimeout(() => {
-            wheel.style.transform = 'rotate(0deg)';
-        }, 2000);
-        
     }, 3000);
 }
 
