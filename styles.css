@@ -329,9 +329,11 @@ body {
     font-size: 1.5rem;
     font-weight: bold;
     text-align: center;
-    min-height: 30px;
+    height: 40px;
+    line-height: 40px;
     margin-top: 20px;
     color: #ff6b35;
+    overflow: hidden;
 }
 
 /* Promo Code Section */
@@ -735,4 +737,68 @@ body.theme-gold .slot-window {
         width: 100%;
         text-align: center;
     }
+} 
+
+/* Theme-specific hover effects */
+body.theme-blue .theme-toggle:hover {
+    border-color: #2196F3;
+    color: #2196F3;
+}
+
+body.theme-blue .roll-button:hover:not(:disabled) {
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+}
+
+body.theme-blue .promo-input:focus {
+    border-color: #2196F3;
+}
+
+body.theme-blue .promo-button:hover {
+    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+}
+
+body.theme-blue .buy-button:hover {
+    box-shadow: 0 3px 10px rgba(33, 150, 243, 0.3);
+}
+
+body.theme-mint .theme-toggle:hover {
+    border-color: #7FDBB6;
+    color: #7FDBB6;
+}
+
+body.theme-mint .roll-button:hover:not(:disabled) {
+    box-shadow: 0 5px 15px rgba(127, 219, 182, 0.4);
+}
+
+body.theme-mint .promo-input:focus {
+    border-color: #7FDBB6;
+}
+
+body.theme-mint .promo-button:hover {
+    box-shadow: 0 3px 10px rgba(127, 219, 182, 0.3);
+}
+
+body.theme-mint .buy-button:hover {
+    box-shadow: 0 3px 10px rgba(127, 219, 182, 0.3);
+}
+
+body.theme-gold .theme-toggle:hover {
+    border-color: #FFD700;
+    color: #FFD700;
+}
+
+body.theme-gold .roll-button:hover:not(:disabled) {
+    box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+}
+
+body.theme-gold .promo-input:focus {
+    border-color: #FFD700;
+}
+
+body.theme-gold .promo-button:hover {
+    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
+}
+
+body.theme-gold .buy-button:hover {
+    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.3);
 } 
