@@ -106,10 +106,12 @@ function spinWheel() {
     // Wait for animation to complete
     setTimeout(() => {
         // Calculate which segment the arrow points to
-        // The arrow points to the top (0 degrees), so we need to calculate
-        // which segment is at the top after the wheel stops
+        // The arrow points to the top (12 o'clock position)
+        // We need to find which segment is at the top after the wheel stops
         const normalizedAngle = finalAngle % 360;
-        const segmentIndex = Math.floor((360 - normalizedAngle) / segmentAngle) % 8;
+        // Since the wheel rotates clockwise, we need to find which segment is at the top
+        // The top position is 0 degrees, so we calculate which segment is there
+        const segmentIndex = Math.floor(normalizedAngle / segmentAngle) % 8;
         
         // Get the result based on the calculated segment
         const segments = document.querySelectorAll('.wheel-segment');

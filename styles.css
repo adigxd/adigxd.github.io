@@ -195,17 +195,7 @@ body {
     position: relative;
     border: 5px solid #ff6b35;
     transition: transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    background: conic-gradient(
-        from 0deg,
-        white 0deg 45deg,
-        white 45deg 90deg,
-        white 90deg 135deg,
-        white 135deg 180deg,
-        white 180deg 225deg,
-        white 225deg 270deg,
-        white 270deg 315deg,
-        white 315deg 360deg
-    );
+    background: white;
 }
 
 .wheel::before {
@@ -232,6 +222,103 @@ body {
         #ff6b35 315deg 316deg,
         transparent 316deg 360deg
     );
+}
+
+/* Add solid border lines using pseudo-elements */
+.wheel::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(0deg);
+}
+
+.wheel-segment:nth-child(1)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.wheel-segment:nth-child(2)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(90deg);
+}
+
+.wheel-segment:nth-child(3)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(135deg);
+}
+
+.wheel-segment:nth-child(4)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.wheel-segment:nth-child(5)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(225deg);
+}
+
+.wheel-segment:nth-child(6)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(270deg);
+}
+
+.wheel-segment:nth-child(7)::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 2px;
+    height: 160px;
+    background: #ff6b35;
+    transform-origin: 0 0;
+    transform: translateY(-50%) rotate(315deg);
 }
 
 .wheel-segment {
