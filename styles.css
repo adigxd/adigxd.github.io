@@ -79,7 +79,7 @@ body {
 .main-content {
     margin-left: 200px;
     flex: 1;
-    padding: 40px;
+    padding: 30px;
 }
 
 .page {
@@ -155,9 +155,9 @@ body {
 
 /* Wheel Page */
 .wheel-header {
-    font-size: 2.5rem;
+    font-size: 2rem;
     text-align: center;
-    margin-bottom: 60px;
+    margin-bottom: 40px;
     color: #333;
 }
 
@@ -165,8 +165,8 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 50px;
-    margin: 40px 0;
+    gap: 40px;
+    margin: 30px 0;
 }
 
 .wheel-wrapper {
@@ -189,23 +189,22 @@ body {
 }
 
 .wheel {
-    width: 400px;
-    height: 400px;
+    width: 320px;
+    height: 320px;
     border-radius: 50%;
     position: relative;
     border: 5px solid #ff6b35;
     transition: transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     background: conic-gradient(
         from 0deg,
-        white 0deg 40deg,
-        white 40deg 80deg,
-        white 80deg 120deg,
-        white 120deg 160deg,
-        white 160deg 200deg,
-        white 200deg 240deg,
-        white 240deg 280deg,
-        white 280deg 320deg,
-        white 320deg 360deg
+        white 0deg 45deg,
+        white 45deg 90deg,
+        white 90deg 135deg,
+        white 135deg 180deg,
+        white 180deg 225deg,
+        white 225deg 270deg,
+        white 270deg 315deg,
+        white 315deg 360deg
     );
 }
 
@@ -217,23 +216,21 @@ body {
     border-radius: 50%;
     background: conic-gradient(
         from 0deg,
-        transparent 0deg 40deg,
-        #ff6b35 40deg 41deg,
-        transparent 41deg 80deg,
-        #ff6b35 80deg 81deg,
-        transparent 81deg 120deg,
-        #ff6b35 120deg 121deg,
-        transparent 121deg 160deg,
-        #ff6b35 160deg 161deg,
-        transparent 161deg 200deg,
-        #ff6b35 200deg 201deg,
-        transparent 201deg 240deg,
-        #ff6b35 240deg 241deg,
-        transparent 241deg 280deg,
-        #ff6b35 280deg 281deg,
-        transparent 281deg 320deg,
-        #ff6b35 320deg 321deg,
-        transparent 321deg 360deg
+        transparent 0deg 45deg,
+        #ff6b35 45deg 46deg,
+        transparent 46deg 90deg,
+        #ff6b35 90deg 91deg,
+        transparent 91deg 135deg,
+        #ff6b35 135deg 136deg,
+        transparent 136deg 180deg,
+        #ff6b35 180deg 181deg,
+        transparent 181deg 225deg,
+        #ff6b35 225deg 226deg,
+        transparent 226deg 270deg,
+        #ff6b35 270deg 271deg,
+        transparent 271deg 315deg,
+        #ff6b35 315deg 316deg,
+        transparent 316deg 360deg
     );
 }
 
@@ -244,7 +241,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     color: #333;
     text-align: center;
@@ -252,19 +249,18 @@ body {
 }
 
 .wheel-segment:nth-child(1) { transform: rotate(0deg); }
-.wheel-segment:nth-child(2) { transform: rotate(40deg); }
-.wheel-segment:nth-child(3) { transform: rotate(80deg); }
-.wheel-segment:nth-child(4) { transform: rotate(120deg); }
-.wheel-segment:nth-child(5) { transform: rotate(160deg); }
-.wheel-segment:nth-child(6) { transform: rotate(200deg); }
-.wheel-segment:nth-child(7) { transform: rotate(240deg); }
-.wheel-segment:nth-child(8) { transform: rotate(280deg); }
-.wheel-segment:nth-child(9) { transform: rotate(320deg); }
+.wheel-segment:nth-child(2) { transform: rotate(45deg); }
+.wheel-segment:nth-child(3) { transform: rotate(90deg); }
+.wheel-segment:nth-child(4) { transform: rotate(135deg); }
+.wheel-segment:nth-child(5) { transform: rotate(180deg); }
+.wheel-segment:nth-child(6) { transform: rotate(225deg); }
+.wheel-segment:nth-child(7) { transform: rotate(270deg); }
+.wheel-segment:nth-child(8) { transform: rotate(315deg); }
 
 .wheel-segment span {
-    transform: rotate(-20deg) translateY(-140px);
+    transform: rotate(-22.5deg) translateY(-110px);
     display: block;
-    max-width: 80px;
+    max-width: 70px;
     line-height: 1.2;
     position: absolute;
 }

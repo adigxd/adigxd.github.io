@@ -96,8 +96,8 @@ function spinWheel() {
     
     // Random rotation (5-10 full rotations + random segment)
     const rotations = 5 + Math.random() * 5;
-    const segmentAngle = 360 / 9; // 9 segments
-    const randomSegment = Math.floor(Math.random() * 9);
+    const segmentAngle = 360 / 8; // 8 segments
+    const randomSegment = Math.floor(Math.random() * 8);
     const finalAngle = rotations * 360 + (randomSegment * segmentAngle);
     
     // Apply rotation
@@ -105,9 +105,15 @@ function spinWheel() {
     
     // Wait for animation to complete
     setTimeout(() => {
-        // Get the result based on the final position
+        // Calculate which segment the arrow points to
+        // The arrow points to the top (0 degrees), so we need to calculate
+        // which segment is at the top after the wheel stops
+        const normalizedAngle = finalAngle % 360;
+        const segmentIndex = Math.floor((360 - normalizedAngle) / segmentAngle) % 8;
+        
+        // Get the result based on the calculated segment
         const segments = document.querySelectorAll('.wheel-segment');
-        const winningSegment = segments[randomSegment];
+        const winningSegment = segments[segmentIndex];
         const action = winningSegment.getAttribute('data-action');
         const value = winningSegment.getAttribute('data-value');
         
