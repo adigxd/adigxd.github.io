@@ -697,9 +697,9 @@ body.theme-gold .theme-toggle.active {
 body.theme-gold .roll-button,
 body.theme-gold .buy-button,
 body.theme-gold .promo-button {
-    background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFD700, #FFA500, #FF8C00, #FFD700);
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500, #FF8C00, #FFD700);
     background-size: 300% 300%;
-    animation: goldShimmer 1s ease-in-out infinite;
+    animation: goldShimmer 4s ease-in-out infinite;
 }
 
 body.theme-gold .price {
@@ -707,9 +707,9 @@ body.theme-gold .price {
 }
 
 body.theme-gold .slot-machine {
-    background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFD700, #FFA500, #FF8C00, #FFD700);
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500, #FF8C00, #FFD700);
     background-size: 300% 300%;
-    animation: goldShimmer 1s ease-in-out infinite;
+    animation: goldShimmer 4s ease-in-out infinite;
 }
 
 body.theme-gold .roll-result {
