@@ -673,12 +673,12 @@ body.theme-mint .slot-window {
 }
 
 body.theme-gold .welcome-header {
-    background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFD700, #FFA500, #FF8C00, #FFD700);
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500, #FF8C00, #FFD700);
     background-size: 400% 400%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    animation: goldShimmer 1.5s ease-in-out infinite;
+    animation: goldShimmer 4s ease-in-out infinite;
 }
 
 body.theme-gold .subheader {
