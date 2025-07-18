@@ -267,12 +267,6 @@ function showRollResult(outcome) {
     
     rollResult.textContent = message;
     rollResult.style.color = getHighlightColor();
-    
-    // Add animation
-    rollResult.style.animation = 'none';
-    setTimeout(() => {
-        rollResult.style.animation = 'pulse 0.5s ease-in-out';
-    }, 10);
 }
 
 // SHA256 Hashing Function
