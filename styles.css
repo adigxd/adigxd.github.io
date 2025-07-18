@@ -189,31 +189,67 @@ body {
 }
 
 .wheel {
-    width: 300px;
-    height: 300px;
+    width: 400px;
+    height: 400px;
     border-radius: 50%;
     position: relative;
     border: 5px solid #ff6b35;
     transition: transform 3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    background-color: #f5f5f5;
+    background: conic-gradient(
+        from 0deg,
+        white 0deg 45deg,
+        white 45deg 90deg,
+        white 90deg 135deg,
+        white 135deg 180deg,
+        white 180deg 225deg,
+        white 225deg 270deg,
+        white 270deg 315deg,
+        white 315deg 360deg
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.wheel::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg 45deg,
+        #ff6b35 45deg 46deg,
+        transparent 46deg 90deg,
+        #ff6b35 90deg 91deg,
+        transparent 91deg 135deg,
+        #ff6b35 135deg 136deg,
+        transparent 136deg 180deg,
+        #ff6b35 180deg 181deg,
+        transparent 181deg 225deg,
+        #ff6b35 225deg 226deg,
+        transparent 226deg 270deg,
+        #ff6b35 270deg 271deg,
+        transparent 271deg 315deg,
+        #ff6b35 315deg 316deg,
+        transparent 316deg 360deg
+    );
 }
 
 .wheel-segment {
     position: absolute;
-    width: 50%;
-    height: 50%;
-    transform-origin: 100% 100%;
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
-    color: white;
+    color: #333;
     text-align: center;
-    padding: 10px;
-    background-color: #f5f5f5;
-    border: 2px solid #ff6b35;
-    clip-path: polygon(0 0, 100% 0, 100% 100%);
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .wheel-segment:nth-child(1) { transform: rotate(0deg); }
@@ -224,6 +260,13 @@ body {
 .wheel-segment:nth-child(6) { transform: rotate(225deg); }
 .wheel-segment:nth-child(7) { transform: rotate(270deg); }
 .wheel-segment:nth-child(8) { transform: rotate(315deg); }
+
+.wheel-segment span {
+    transform: rotate(-22.5deg);
+    display: block;
+    max-width: 80px;
+    line-height: 1.2;
+}
 
 .spin-button {
     background: linear-gradient(45deg, #ff6b35, #f7931e);
@@ -280,11 +323,16 @@ body {
     }
     
     .wheel {
-        width: 250px;
-        height: 250px;
+        width: 300px;
+        height: 300px;
     }
     
     .wheel-segment {
-        font-size: 10px;
+        font-size: 12px;
+        padding: 15px;
+    }
+    
+    .wheel-segment span {
+        max-width: 60px;
     }
 } 
