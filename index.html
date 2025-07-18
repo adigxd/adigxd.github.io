@@ -14,9 +14,13 @@
             <i class="fas fa-home"></i>
             <span>Home</span>
         </div>
-        <div class="nav-item" data-page="wheel">
-            <i class="fas fa-circle-notch"></i>
-            <span>Wheel</span>
+        <div class="nav-item" data-page="roll">
+            <i class="fas fa-dice"></i>
+            <span>Roll</span>
+        </div>
+        <div class="nav-item" data-page="shop">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Shop</span>
         </div>
     </nav>
 
@@ -25,6 +29,14 @@
         <div class="coin-container">
             <img src="resources/coin.png" alt="Coin" class="coin-image">
             <span class="coin-amount" id="coinAmount">0</span>
+        </div>
+        <div class="theme-toggles">
+            <button class="theme-toggle" id="darkModeToggle" title="Dark Mode (1000 coins)">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button class="theme-toggle" id="colorToggle" title="Change Theme (1000 coins each)">
+                <i class="fas fa-palette"></i>
+            </button>
         </div>
     </div>
 
@@ -57,26 +69,80 @@
             </div>
         </div>
 
-        <!-- Wheel Page -->
-        <div id="wheel-page" class="page">
-            <h1 class="wheel-header">Spin the Wheel!</h1>
-            <div class="wheel-container">
-                <div class="wheel-wrapper">
-                    <div class="wheel-pointer"></div>
-                    <div class="wheel" id="wheel">
-                        <div class="wheel-segment" data-action="add" data-value="10"><span>+10 Coins</span></div>
-                        <div class="wheel-segment" data-action="multiply" data-value="2"><span>×2 Coins</span></div>
-                        <div class="wheel-segment" data-action="lose-all"><span>Lose All</span></div>
-                        <div class="wheel-segment" data-action="divide" data-value="2"><span>÷2 Coins</span></div>
-                        <div class="wheel-segment" data-action="rate" data-value="1"><span>+1 Rate</span></div>
-                        <div class="wheel-segment" data-action="multiply" data-value="3"><span>×3 Coins</span></div>
-                        <div class="wheel-segment" data-action="divide" data-value="3"><span>÷3 Coins</span></div>
-                        <div class="wheel-segment" data-action="add" data-value="50"><span>+50 Coins</span></div>
+        <!-- Roll Page -->
+        <div id="roll-page" class="page">
+            <h1 class="roll-header">Roll the Slot Machine!</h1>
+            <div class="slot-container">
+                <div class="slot-machine">
+                    <div class="slot-window">
+                        <div class="slot-reel" id="slotReel">
+                            <div class="slot-item">+10 coins</div>
+                            <div class="slot-item">+100 coins</div>
+                            <div class="slot-item">+1000 coins</div>
+                            <div class="slot-item">coins × 2</div>
+                            <div class="slot-item">coins × 5</div>
+                            <div class="slot-item">lose all coins</div>
+                            <div class="slot-item">coins ÷ 2</div>
+                            <div class="slot-item">coins ÷ 5</div>
+                            <div class="slot-item">coin rate +1</div>
+                            <div class="slot-item">coin rate +10</div>
+                            <div class="slot-item">coin rate × 2</div>
+                            <div class="slot-item">coin rate ÷ 2</div>
+                            <div class="slot-item">coin rate = 1</div>
+                        </div>
                     </div>
                 </div>
-                <button class="spin-button" id="spinButton">SPIN!</button>
+                <button class="roll-button" id="rollButton">ROLL!</button>
+                <div class="roll-timer" id="rollTimer"></div>
             </div>
-            <div class="wheel-result" id="wheelResult"></div>
+            <div class="roll-result" id="rollResult"></div>
+        </div>
+
+        <!-- Shop Page -->
+        <div id="shop-page" class="page">
+            <h1 class="shop-header">Shop</h1>
+            <div class="shop-items">
+                <div class="shop-item" data-item="dark_mode" data-price="1000">
+                    <div class="shop-item-info">
+                        <h3>Dark Mode</h3>
+                        <p>Switch to dark theme</p>
+                    </div>
+                    <div class="shop-item-price">
+                        <span class="price">1000</span>
+                        <button class="buy-button" data-item="dark_mode">Buy</button>
+                    </div>
+                </div>
+                <div class="shop-item" data-item="blue_theme" data-price="1000">
+                    <div class="shop-item-info">
+                        <h3>Blue Theme</h3>
+                        <p>Blue highlight colors</p>
+                    </div>
+                    <div class="shop-item-price">
+                        <span class="price">1000</span>
+                        <button class="buy-button" data-item="blue_theme">Buy</button>
+                    </div>
+                </div>
+                <div class="shop-item" data-item="mint_theme" data-price="1000">
+                    <div class="shop-item-info">
+                        <h3>Mint Theme</h3>
+                        <p>Mint highlight colors</p>
+                    </div>
+                    <div class="shop-item-price">
+                        <span class="price">1000</span>
+                        <button class="buy-button" data-item="mint_theme">Buy</button>
+                    </div>
+                </div>
+                <div class="shop-item" data-item="gold_theme" data-price="2000">
+                    <div class="shop-item-info">
+                        <h3>Fancy Gold Theme</h3>
+                        <p>Gold gradient highlights</p>
+                    </div>
+                    <div class="shop-item-price">
+                        <span class="price">2000</span>
+                        <button class="buy-button" data-item="gold_theme">Buy</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 

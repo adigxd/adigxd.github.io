@@ -1,18 +1,33 @@
 // Coin System
 let coinAmount = 0;
-let coinRate = 0;
+let coinRate = 1; // Default rate is 1
 let coinInterval;
+let rollCooldown = 0;
+let rollCooldownInterval;
+
+// Theme System
+let darkMode = false;
+let currentTheme = 'default';
+let purchasedThemes = [];
 
 // Initialize coin system
 function initCoinSystem() {
-    // Load from localStorage
-    const savedAmount = localStorage.getItem('coinAmount');
-    const savedRate = localStorage.getItem('coinRate');
+    // Load from localStorage with new snake_case keys
+    const savedAmount = localStorage.getItem('amount');
+    const savedRate = localStorage.getItem('rate');
+    const savedDarkMode = localStorage.getItem('dark_mode');
+    const savedTheme = localStorage.getItem('current_theme');
+    const savedPurchasedThemes = localStorage.getItem('purchased_themes');
     
     coinAmount = savedAmount ? parseInt(savedAmount) : 0;
-    coinRate = savedRate ? parseInt(savedRate) : 0;
+    coinRate = savedRate ? parseInt(savedRate) : 1;
+    darkMode = savedDarkMode === 'true';
+    currentTheme = savedTheme || 'default';
+    purchasedThemes = savedPurchasedThemes ? JSON.parse(savedPurchasedThemes) : [];
     
     updateCoinDisplay();
+    updateThemeToggles();
+    applyTheme();
     
     // Start the rate timer (every 3 seconds)
     coinInterval = setInterval(() => {
@@ -26,8 +41,11 @@ function initCoinSystem() {
 
 // Save coin data to localStorage
 function saveCoinData() {
-    localStorage.setItem('coinAmount', coinAmount.toString());
-    localStorage.setItem('coinRate', coinRate.toString());
+    localStorage.setItem('amount', coinAmount.toString());
+    localStorage.setItem('rate', coinRate.toString());
+    localStorage.setItem('dark_mode', darkMode.toString());
+    localStorage.setItem('current_theme', currentTheme);
+    localStorage.setItem('purchased_themes', JSON.stringify(purchasedThemes));
 }
 
 // Update coin display
@@ -62,148 +80,364 @@ function initNavigation() {
     });
 }
 
-// Wheel System
-let isSpinning = false;
+// Slot Machine System
+let isRolling = false;
 
-function initWheel() {
-    const wheel = document.getElementById('wheel');
-    const spinButton = document.getElementById('spinButton');
-    const wheelResult = document.getElementById('wheelResult');
+function initSlotMachine() {
+    const rollButton = document.getElementById('rollButton');
+    const rollTimer = document.getElementById('rollTimer');
     
-    if (spinButton) {
-        spinButton.addEventListener('click', () => {
-            if (!isSpinning) {
-                spinWheel();
+    if (rollButton) {
+        rollButton.addEventListener('click', () => {
+            if (!isRolling && rollCooldown <= 0) {
+                rollSlotMachine();
             }
         });
     }
+    
+    // Start cooldown timer
+    rollCooldownInterval = setInterval(() => {
+        if (rollCooldown > 0) {
+            rollCooldown--;
+            updateRollTimer();
+        }
+    }, 1000);
 }
 
-function spinWheel() {
-    if (isSpinning) return;
+function rollSlotMachine() {
+    if (isRolling || rollCooldown > 0) return;
     
-    isSpinning = true;
-    const spinButton = document.getElementById('spinButton');
-    const wheelResult = document.getElementById('wheelResult');
-    const wheel = document.getElementById('wheel');
+    isRolling = true;
+    const rollButton = document.getElementById('rollButton');
+    const rollResult = document.getElementById('rollResult');
+    const slotReel = document.getElementById('slotReel');
     
     // Disable button
-    spinButton.disabled = true;
-    spinButton.textContent = 'Spinning...';
+    rollButton.disabled = true;
+    rollButton.textContent = 'Rolling...';
     
     // Clear previous result
-    wheelResult.textContent = '';
+    rollResult.textContent = '';
     
-    // Random rotation (5-10 full rotations + random segment)
-    const rotations = 5 + Math.random() * 5;
-    const segmentAngle = 360 / 8; // 8 segments
-    const randomSegment = Math.floor(Math.random() * 8);
-    const finalAngle = rotations * 360 + (randomSegment * segmentAngle);
+    // Random outcome
+    const outcomes = [
+        { action: 'add', value: 10, text: '+10 coins' },
+        { action: 'add', value: 100, text: '+100 coins' },
+        { action: 'add', value: 1000, text: '+1000 coins' },
+        { action: 'multiply', value: 2, text: 'coins × 2' },
+        { action: 'multiply', value: 5, text: 'coins × 5' },
+        { action: 'lose-all', value: 0, text: 'lose all coins' },
+        { action: 'divide', value: 2, text: 'coins ÷ 2' },
+        { action: 'divide', value: 5, text: 'coins ÷ 5' },
+        { action: 'rate-add', value: 1, text: 'coin rate +1' },
+        { action: 'rate-add', value: 10, text: 'coin rate +10' },
+        { action: 'rate-multiply', value: 2, text: 'coin rate × 2' },
+        { action: 'rate-divide', value: 2, text: 'coin rate ÷ 2' },
+        { action: 'rate-set', value: 1, text: 'coin rate = 1' }
+    ];
     
-    // Apply rotation
-    wheel.style.transform = `rotate(${finalAngle}deg)`;
+    const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+    
+    // Animate slot reel
+    const itemHeight = 80;
+    const totalItems = outcomes.length;
+    const randomIndex = Math.floor(Math.random() * totalItems);
+    const finalPosition = -(randomIndex * itemHeight);
+    
+    slotReel.style.transform = `translateY(${finalPosition}px)`;
     
     // Wait for animation to complete
     setTimeout(() => {
-        // Calculate which segment the arrow points to
-        // The arrow points to the top (12 o'clock position)
-        // We need to find which segment is at the top after the wheel stops
-        const normalizedAngle = finalAngle % 360;
-        // Since the wheel rotates clockwise, we need to find which segment is at the top
-        // The top position is 0 degrees, so we calculate which segment is there
-        const segmentIndex = Math.floor(normalizedAngle / segmentAngle) % 8;
-        
-        // Get the result based on the calculated segment
-        const segments = document.querySelectorAll('.wheel-segment');
-        const winningSegment = segments[segmentIndex];
-        const action = winningSegment.getAttribute('data-action');
-        const value = winningSegment.getAttribute('data-value');
-        
         // Apply the result
-        applyWheelResult(action, value);
+        applyRollResult(randomOutcome);
         
         // Show result message
-        showWheelResult(action, value, winningSegment.textContent);
+        showRollResult(randomOutcome);
         
-        // Re-enable button
-        isSpinning = false;
-        spinButton.disabled = false;
-        spinButton.textContent = 'SPIN!';
+        // Re-enable button and start cooldown
+        isRolling = false;
+        rollCooldown = 30;
+        updateRollTimer();
+        
+        // Reset slot reel
+        setTimeout(() => {
+            slotReel.style.transform = 'translateY(0)';
+        }, 2000);
         
     }, 3000);
 }
 
-function applyWheelResult(action, value) {
-    switch (action) {
+function applyRollResult(outcome) {
+    switch (outcome.action) {
         case 'add':
-            coinAmount += parseInt(value);
+            coinAmount += outcome.value;
             break;
         case 'multiply':
-            coinAmount = Math.floor(coinAmount * parseInt(value));
+            coinAmount = Math.floor(coinAmount * outcome.value);
             break;
         case 'divide':
-            coinAmount = Math.floor(coinAmount / parseInt(value));
+            coinAmount = Math.floor(coinAmount / outcome.value);
             break;
         case 'lose-all':
             coinAmount = 0;
             break;
-        case 'rate':
-            coinRate += parseInt(value);
+        case 'rate-add':
+            coinRate += outcome.value;
+            break;
+        case 'rate-multiply':
+            coinRate = Math.floor(coinRate * outcome.value);
+            break;
+        case 'rate-divide':
+            coinRate = Math.floor(coinRate / outcome.value);
+            break;
+        case 'rate-set':
+            coinRate = outcome.value;
             break;
     }
     
     // Ensure coin amount doesn't go negative
     if (coinAmount < 0) coinAmount = 0;
+    if (coinRate < 0) coinRate = 0;
     
     saveCoinData();
     updateCoinDisplay();
 }
 
-function showWheelResult(action, value, text) {
-    const wheelResult = document.getElementById('wheelResult');
+function showRollResult(outcome) {
+    const rollResult = document.getElementById('rollResult');
     let message = '';
     let color = '#333';
     
-    switch (action) {
+    switch (outcome.action) {
         case 'add':
-            message = `You won ${value} coins!`;
+            message = `You won ${outcome.value} coins!`;
             color = '#4CAF50';
             break;
         case 'multiply':
-            message = `Your coins were multiplied by ${value}!`;
+            message = `Your coins were multiplied by ${outcome.value}!`;
             color = '#2196F3';
             break;
         case 'divide':
-            message = `Your coins were divided by ${value}!`;
+            message = `Your coins were divided by ${outcome.value}!`;
             color = '#FF9800';
             break;
         case 'lose-all':
             message = 'You lost all your coins!';
             color = '#f44336';
             break;
-        case 'rate':
-            message = `Your coin rate increased by ${value}!`;
+        case 'rate-add':
+            message = `Your coin rate increased by ${outcome.value}!`;
+            color = '#9C27B0';
+            break;
+        case 'rate-multiply':
+            message = `Your coin rate was multiplied by ${outcome.value}!`;
+            color = '#2196F3';
+            break;
+        case 'rate-divide':
+            message = `Your coin rate was divided by ${outcome.value}!`;
+            color = '#FF9800';
+            break;
+        case 'rate-set':
+            message = `Your coin rate was set to ${outcome.value}!`;
             color = '#9C27B0';
             break;
     }
     
-    wheelResult.textContent = message;
-    wheelResult.style.color = color;
+    rollResult.textContent = message;
+    rollResult.style.color = color;
     
     // Add animation
-    wheelResult.style.animation = 'none';
+    rollResult.style.animation = 'none';
     setTimeout(() => {
-        wheelResult.style.animation = 'pulse 0.5s ease-in-out';
+        rollResult.style.animation = 'pulse 0.5s ease-in-out';
     }, 10);
 }
 
-// Add pulse animation
+function updateRollTimer() {
+    const rollButton = document.getElementById('rollButton');
+    const rollTimer = document.getElementById('rollTimer');
+    
+    if (rollCooldown > 0) {
+        rollButton.disabled = true;
+        rollButton.textContent = `Rolling... (${rollCooldown}s)`;
+        rollTimer.textContent = `Next roll in ${rollCooldown} seconds`;
+    } else {
+        rollButton.disabled = false;
+        rollButton.textContent = 'ROLL!';
+        rollTimer.textContent = '';
+    }
+}
+
+// Shop System
+function initShop() {
+    const buyButtons = document.querySelectorAll('.buy-button');
+    
+    buyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const item = button.getAttribute('data-item');
+            const shopItem = button.closest('.shop-item');
+            const price = parseInt(shopItem.getAttribute('data-price'));
+            
+            if (coinAmount >= price && !purchasedThemes.includes(item)) {
+                // Purchase item
+                coinAmount -= price;
+                purchasedThemes.push(item);
+                
+                // Update UI
+                button.textContent = 'Owned';
+                button.disabled = true;
+                shopItem.style.opacity = '0.7';
+                
+                saveCoinData();
+                updateCoinDisplay();
+                updateThemeToggles();
+                
+                // Show purchase message
+                showPurchaseMessage(item);
+            }
+        });
+    });
+    
+    // Update shop UI based on owned items
+    updateShopUI();
+}
+
+function updateShopUI() {
+    const shopItems = document.querySelectorAll('.shop-item');
+    
+    shopItems.forEach(item => {
+        const itemName = item.getAttribute('data-item');
+        const buyButton = item.querySelector('.buy-button');
+        
+        if (purchasedThemes.includes(itemName)) {
+            buyButton.textContent = 'Owned';
+            buyButton.disabled = true;
+            item.style.opacity = '0.7';
+        }
+    });
+}
+
+function showPurchaseMessage(item) {
+    const messages = {
+        'dark_mode': 'Dark mode unlocked!',
+        'blue_theme': 'Blue theme unlocked!',
+        'mint_theme': 'Mint theme unlocked!',
+        'gold_theme': 'Fancy gold theme unlocked!'
+    };
+    
+    const message = messages[item] || 'Item purchased!';
+    
+    // Create temporary notification
+    const notification = document.createElement('div');
+    notification.textContent = message;
+    notification.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #4CAF50;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 10px;
+        font-weight: bold;
+        z-index: 1000;
+        animation: fadeInOut 2s ease-in-out;
+    `;
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+        document.body.removeChild(notification);
+    }, 2000);
+}
+
+// Theme System
+function initThemeToggles() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const colorToggle = document.getElementById('colorToggle');
+    
+    if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+            if (purchasedThemes.includes('dark_mode')) {
+                darkMode = !darkMode;
+                applyTheme();
+                saveCoinData();
+            }
+        });
+    }
+    
+    if (colorToggle) {
+        colorToggle.addEventListener('click', () => {
+            if (purchasedThemes.length > 0) {
+                cycleTheme();
+                applyTheme();
+                saveCoinData();
+            }
+        });
+    }
+}
+
+function updateThemeToggles() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    const colorToggle = document.getElementById('colorToggle');
+    
+    // Update dark mode toggle
+    if (purchasedThemes.includes('dark_mode')) {
+        darkModeToggle.classList.remove('disabled');
+        darkModeToggle.classList.toggle('active', darkMode);
+    } else {
+        darkModeToggle.classList.add('disabled');
+        darkModeToggle.classList.remove('active');
+    }
+    
+    // Update color toggle
+    if (purchasedThemes.length > 0) {
+        colorToggle.classList.remove('disabled');
+        colorToggle.classList.add('active');
+    } else {
+        colorToggle.classList.add('disabled');
+        colorToggle.classList.remove('active');
+    }
+}
+
+function cycleTheme() {
+    const availableThemes = ['default', ...purchasedThemes.filter(theme => theme !== 'dark_mode')];
+    const currentIndex = availableThemes.indexOf(currentTheme);
+    const nextIndex = (currentIndex + 1) % availableThemes.length;
+    currentTheme = availableThemes[nextIndex];
+}
+
+function applyTheme() {
+    const body = document.body;
+    
+    // Remove all theme classes
+    body.classList.remove('dark-mode', 'theme-blue', 'theme-mint', 'theme-gold');
+    
+    // Apply dark mode
+    if (darkMode) {
+        body.classList.add('dark-mode');
+    }
+    
+    // Apply color theme
+    if (currentTheme !== 'default') {
+        body.classList.add(`theme-${currentTheme.replace('_theme', '')}`);
+    }
+}
+
+// Add animations
 const style = document.createElement('style');
 style.textContent = `
     @keyframes pulse {
         0% { transform: scale(1); }
         50% { transform: scale(1.1); }
         100% { transform: scale(1); }
+    }
+    
+    @keyframes fadeInOut {
+        0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        20% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
     }
 `;
 document.head.appendChild(style);
@@ -212,12 +446,11 @@ document.head.appendChild(style);
 document.addEventListener('DOMContentLoaded', () => {
     initCoinSystem();
     initNavigation();
-    initWheel();
+    initSlotMachine();
+    initShop();
+    initThemeToggles();
     
-    // Show initial coin rate if it exists
-    if (coinRate > 0) {
-        console.log(`Coin rate: +${coinRate} every 3 seconds`);
-    }
+    console.log(`Coin rate: +${coinRate} every 3 seconds`);
 });
 
 // Save data before page unload
