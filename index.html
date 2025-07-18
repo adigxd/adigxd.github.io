@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adigxd - GitHub Pages</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="nav-item active" data-page="home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item" data-page="wheel">
+            <i class="fas fa-circle-notch"></i>
+            <span>Wheel</span>
+        </div>
+    </nav>
+
+    <!-- Coin Display -->
+    <div class="coin-display">
+        <div class="coin-container">
+            <img src="resources/coin.png" alt="Coin" class="coin-image">
+            <span class="coin-amount" id="coinAmount">0</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Home Page -->
+        <div id="home-page" class="page active">
+            <h1 class="welcome-header">Welcome!</h1>
+            <h2 class="subheader">Thanks for stopping by my GitHub Page</h2>
+            <br>
+            <h2 class="projects-header">Current Projects...</h2>
+            
+            <div class="projects-grid">
+                <div class="project-box">
+                    <i class="fab fa-react"></i>
+                    <h3>NextBI</h3>
+                    <a href="https://github.com/adigxd/NextBI" target="_blank">View Project</a>
+                </div>
+                <div class="project-box">
+                    <i class="fas fa-cube"></i>
+                    <h3>Voxelbulb</h3>
+                    <a href="https://github.com/adigxd/Voxelbulb" target="_blank">View Project</a>
+                </div>
+                <div class="project-box">
+                    <i class="fas fa-gamepad"></i>
+                    <h3>Arena</h3>
+                    <a href="https://github.com/adigxd/Arena" target="_blank">View Project</a>
+                </div>
+                <div class="project-box">
+                    <i class="fas fa-brain"></i>
+                    <h3>Career Tree</h3>
+                    <a href="https://github.com/adigxd/CareerTree-py" target="_blank">View Project</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wheel Page -->
+        <div id="wheel-page" class="page">
+            <h1 class="wheel-header">Spin the Wheel!</h1>
+            <div class="wheel-container">
+                <div class="wheel" id="wheel">
+                    <div class="wheel-segment" data-action="add" data-value="10">+10 Coins</div>
+                    <div class="wheel-segment" data-action="multiply" data-value="2">×2 Coins</div>
+                    <div class="wheel-segment" data-action="lose-all">Lose All</div>
+                    <div class="wheel-segment" data-action="divide" data-value="2">÷2 Coins</div>
+                    <div class="wheel-segment" data-action="rate" data-value="1">+1 Rate</div>
+                    <div class="wheel-segment" data-action="add" data-value="25">+25 Coins</div>
+                    <div class="wheel-segment" data-action="multiply" data-value="3">×3 Coins</div>
+                    <div class="wheel-segment" data-action="divide" data-value="3">÷3 Coins</div>
+                </div>
+                <button class="spin-button" id="spinButton">SPIN!</button>
+            </div>
+            <div class="wheel-result" id="wheelResult"></div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html> 
