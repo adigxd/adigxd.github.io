@@ -1,1 +1,1 @@
-<img src="resources/coin.png" alt="Coin" width="50" height="50">
+<img src="resources/coin.png" alt="Coin" height=20vh>
