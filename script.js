@@ -1,6 +1,6 @@
 // Coin System
-let coinAmount = 0;
-let coinRate = 1; // Default rate is 1
+let coin_amount = 0;
+let coin_rate = 1; // Default rate is 1
 let coinInterval;
 let rollCooldown = 0;
 let rollCooldownInterval;
@@ -19,8 +19,8 @@ function initCoinSystem() {
     const savedTheme = localStorage.getItem('current_theme');
     const savedPurchasedThemes = localStorage.getItem('purchased_themes');
     
-    coinAmount = savedAmount ? parseInt(savedAmount) : 0;
-    coinRate = savedRate ? parseInt(savedRate) : 1;
+    coin_amount = savedAmount ? parseInt(savedAmount) : 0;
+    coin_rate = savedRate ? parseInt(savedRate) : 1;
     darkMode = savedDarkMode === 'true';
     currentTheme = savedTheme || 'default';
     purchasedThemes = savedPurchasedThemes ? JSON.parse(savedPurchasedThemes) : [];
@@ -31,8 +31,8 @@ function initCoinSystem() {
     
     // Start the rate timer (every 3 seconds)
     coinInterval = setInterval(() => {
-        if (coinRate > 0) {
-            coinAmount += coinRate;
+        if (coin_rate > 0) {
+            coin_amount += coin_rate;
             saveCoinData();
             updateCoinDisplay();
         }
@@ -41,8 +41,8 @@ function initCoinSystem() {
 
 // Save coin data to localStorage
 function saveCoinData() {
-    localStorage.setItem('amount', coinAmount.toString());
-    localStorage.setItem('rate', coinRate.toString());
+    localStorage.setItem('amount', coin_amount.toString());
+    localStorage.setItem('rate', coin_rate.toString());
     localStorage.setItem('dark_mode', darkMode.toString());
     localStorage.setItem('current_theme', currentTheme);
     localStorage.setItem('purchased_themes', JSON.stringify(purchasedThemes));
@@ -52,7 +52,7 @@ function saveCoinData() {
 function updateCoinDisplay() {
     const coinAmountElement = document.getElementById('coinAmount');
     if (coinAmountElement) {
-        coinAmountElement.textContent = coinAmount.toLocaleString();
+        coinAmountElement.textContent = coin_amount.toLocaleString();
     }
 }
 
@@ -138,10 +138,13 @@ function rollSlotMachine() {
     
     const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
     
-    // Clear all slot items during roll
+    // Restore all slot items with bold text during roll
     const slotItems = slotReel.querySelectorAll('.slot-item');
-    slotItems.forEach(item => {
-        item.textContent = '';
+    slotItems.forEach((item, index) => {
+        item.textContent = outcomes[index].text;
+        item.style.color = '#333';
+        item.style.fontSize = '16px';
+        item.style.fontWeight = 'bold';
     });
     
     // Animate slot reel
@@ -154,11 +157,11 @@ function rollSlotMachine() {
     
     // Wait for animation to complete
     setTimeout(() => {
-        // Show the winning text in the slot
+        // Clear the landing position and show the winning text
         const winningSlotItem = slotItems[randomIndex];
         winningSlotItem.textContent = randomOutcome.text;
         winningSlotItem.style.color = getHighlightColor();
-        winningSlotItem.style.fontSize = '24px';
+        winningSlotItem.style.fontSize = '28px';
         winningSlotItem.style.fontWeight = 'bold';
         winningSlotItem.style.transition = 'all 0.3s ease';
         
@@ -175,20 +178,20 @@ function rollSlotMachine() {
         
         // Reset slot item after a delay
         setTimeout(() => {
-            winningSlotItem.style.fontSize = '14px';
-            winningSlotItem.style.fontWeight = 'normal';
+            winningSlotItem.style.fontSize = '16px';
+            winningSlotItem.style.fontWeight = 'bold';
             winningSlotItem.style.transition = 'all 0.3s ease';
         }, 1000);
         
         // Reset slot reel
         setTimeout(() => {
             slotReel.style.transform = 'translateY(0)';
-            // Restore all slot items
+            // Restore all slot items to normal state
             slotItems.forEach((item, index) => {
                 item.textContent = outcomes[index].text;
                 item.style.color = '#333';
-                item.style.fontSize = '14px';
-                item.style.fontWeight = 'normal';
+                item.style.fontSize = '16px';
+                item.style.fontWeight = 'bold';
             });
         }, 2000);
         
@@ -198,34 +201,34 @@ function rollSlotMachine() {
 function applyRollResult(outcome) {
     switch (outcome.action) {
         case 'add':
-            coinAmount += outcome.value;
+            coin_amount += outcome.value;
             break;
         case 'multiply':
-            coinAmount = Math.floor(coinAmount * outcome.value);
+            coin_amount = Math.floor(coin_amount * outcome.value);
             break;
         case 'divide':
-            coinAmount = Math.floor(coinAmount / outcome.value);
+            coin_amount = Math.floor(coin_amount / outcome.value);
             break;
         case 'lose-all':
-            coinAmount = 0;
+            coin_amount = 0;
             break;
         case 'rate-add':
-            coinRate += outcome.value;
+            coin_rate += outcome.value;
             break;
         case 'rate-multiply':
-            coinRate = Math.floor(coinRate * outcome.value);
+            coin_rate = Math.floor(coin_rate * outcome.value);
             break;
         case 'rate-divide':
-            coinRate = Math.floor(coinRate / outcome.value);
+            coin_rate = Math.floor(coin_rate / outcome.value);
             break;
         case 'rate-set':
-            coinRate = outcome.value;
+            coin_rate = outcome.value;
             break;
     }
     
     // Ensure coin amount doesn't go negative
-    if (coinAmount < 0) coinAmount = 0;
-    if (coinRate < 0) coinRate = 0;
+    if (coin_amount < 0) coin_amount = 0;
+    if (coin_rate < 0) coin_rate = 0;
     
     saveCoinData();
     updateCoinDisplay();
@@ -304,9 +307,9 @@ function initShop() {
             const shopItem = button.closest('.shop-item');
             const price = parseInt(shopItem.getAttribute('data-price'));
             
-            if (coinAmount >= price && !purchasedThemes.includes(item)) {
+            if (coin_amount >= price && !purchasedThemes.includes(item)) {
                 // Purchase item
-                coinAmount -= price;
+                coin_amount -= price;
                 purchasedThemes.push(item);
                 
                 // Update UI
@@ -476,7 +479,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initShop();
     initThemeToggles();
     
-    console.log(`Coin rate: +${coinRate} every 3 seconds`);
+    console.log(`Coin rate: +${coin_rate} every 3 seconds`);
 });
 
 // Save data before page unload
