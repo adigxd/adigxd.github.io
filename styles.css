@@ -331,6 +331,73 @@ body {
     text-align: center;
     min-height: 30px;
     margin-top: 20px;
+    color: #ff6b35;
+}
+
+/* Promo Code Section */
+.promo-section {
+    margin-top: 50px;
+    padding-top: 30px;
+    border-top: 2px solid #eee;
+}
+
+.promo-header {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.promo-input-container {
+    display: flex;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto 15px;
+}
+
+.promo-input {
+    flex: 1;
+    padding: 12px 15px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.promo-input:focus {
+    border-color: #ff6b35;
+}
+
+.promo-button {
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.promo-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 10px rgba(255, 107, 53, 0.3);
+}
+
+.promo-result {
+    text-align: center;
+    font-weight: bold;
+    min-height: 20px;
+    margin-top: 10px;
+}
+
+.promo-result.success {
+    color: #4CAF50;
+}
+
+.promo-result.error {
+    color: #f44336;
 }
 
 /* Shop Page */
@@ -488,7 +555,8 @@ body.theme-blue .theme-toggle.active {
 }
 
 body.theme-blue .roll-button,
-body.theme-blue .buy-button {
+body.theme-blue .buy-button,
+body.theme-blue .promo-button {
     background: linear-gradient(45deg, #2196F3, #03A9F4);
 }
 
@@ -498,6 +566,14 @@ body.theme-blue .price {
 
 body.theme-blue .slot-machine {
     background: linear-gradient(45deg, #2196F3, #03A9F4);
+}
+
+body.theme-blue .roll-result {
+    color: #2196F3;
+}
+
+body.theme-blue .promo-input:focus {
+    border-color: #2196F3;
 }
 
 body.theme-mint .welcome-header {
@@ -521,7 +597,8 @@ body.theme-mint .theme-toggle.active {
 }
 
 body.theme-mint .roll-button,
-body.theme-mint .buy-button {
+body.theme-mint .buy-button,
+body.theme-mint .promo-button {
     background: linear-gradient(45deg, #4CAF50, #8BC34A);
 }
 
@@ -531,6 +608,14 @@ body.theme-mint .price {
 
 body.theme-mint .slot-machine {
     background: linear-gradient(45deg, #4CAF50, #8BC34A);
+}
+
+body.theme-mint .roll-result {
+    color: #4CAF50;
+}
+
+body.theme-mint .promo-input:focus {
+    border-color: #4CAF50;
 }
 
 body.theme-gold .welcome-header {
@@ -554,7 +639,8 @@ body.theme-gold .theme-toggle.active {
 }
 
 body.theme-gold .roll-button,
-body.theme-gold .buy-button {
+body.theme-gold .buy-button,
+body.theme-gold .promo-button {
     background: linear-gradient(45deg, #FFD700, #FFA500);
 }
 
@@ -564,6 +650,14 @@ body.theme-gold .price {
 
 body.theme-gold .slot-machine {
     background: linear-gradient(45deg, #FFD700, #FFA500);
+}
+
+body.theme-gold .roll-result {
+    color: #FFD700;
+}
+
+body.theme-gold .promo-input:focus {
+    border-color: #FFD700;
 }
 
 /* Responsive Design */

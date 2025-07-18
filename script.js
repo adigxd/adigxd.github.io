@@ -275,6 +275,111 @@ function showRollResult(outcome) {
     }, 10);
 }
 
+// SHA256 Hashing Function
+async function sha256(message) {
+    const msgBuffer = new TextEncoder().encode(message);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
+
+// Promo Code System
+const promoCodes = {
+    '099dff277c3cde879901c60791f5e1e1920d395a9fe9e84c4902a0b46a23ca69': 9270,
+    'd75e1756b21c97ccc78ed6af6bb88eb1cb8fd84f9ec023de75d356875d312d6a': 1000,
+    'a37a2500c9e50b1d729a6510adb91c884349aa5eda25f86f595a879f8e2c8d72': 4130
+};
+
+let redeemedPromoCodes = [];
+
+function initPromoCodeSystem() {
+    const promoButton = document.getElementById('promoButton');
+    const promoInput = document.getElementById('promoInput');
+    
+    if (promoButton) {
+        promoButton.addEventListener('click', () => {
+            validatePromoCode();
+        });
+    }
+    
+    if (promoInput) {
+        promoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                validatePromoCode();
+            }
+        });
+    }
+    
+    // Load redeemed codes from localStorage
+    const savedRedeemedCodes = localStorage.getItem('redeemed_promo_codes');
+    if (savedRedeemedCodes) {
+        redeemedPromoCodes = JSON.parse(savedRedeemedCodes);
+    }
+}
+
+async function validatePromoCode() {
+    const promoInput = document.getElementById('promoInput');
+    const promoResult = document.getElementById('promoResult');
+    const promoButton = document.getElementById('promoButton');
+    
+    const inputCode = promoInput.value.trim();
+    
+    if (!inputCode) {
+        showPromoResult('Please enter a promo code.', 'error');
+        return;
+    }
+    
+    // Disable button during validation
+    promoButton.disabled = true;
+    promoButton.textContent = 'Validating...';
+    
+    try {
+        // Hash the input code
+        const hashedInput = await sha256(inputCode);
+        
+        // Check if code exists and hasn't been redeemed
+        if (promoCodes[hashedInput]) {
+            if (redeemedPromoCodes.includes(hashedInput)) {
+                showPromoResult('This promo code has already been redeemed.', 'error');
+            } else {
+                // Redeem the code
+                const reward = promoCodes[hashedInput];
+                coin_amount += reward;
+                redeemedPromoCodes.push(hashedInput);
+                
+                // Save to localStorage
+                localStorage.setItem('redeemed_promo_codes', JSON.stringify(redeemedPromoCodes));
+                saveCoinData();
+                updateCoinDisplay();
+                
+                showPromoResult(`Successfully redeemed! You received ${reward} coins.`, 'success');
+                promoInput.value = '';
+            }
+        } else {
+            showPromoResult('Invalid promo code.', 'error');
+        }
+    } catch (error) {
+        showPromoResult('Error validating promo code. Please try again.', 'error');
+    }
+    
+    // Re-enable button
+    promoButton.disabled = false;
+    promoButton.textContent = 'Redeem';
+}
+
+function showPromoResult(message, type) {
+    const promoResult = document.getElementById('promoResult');
+    promoResult.textContent = message;
+    promoResult.className = `promo-result ${type}`;
+    
+    // Clear result after 5 seconds
+    setTimeout(() => {
+        promoResult.textContent = '';
+        promoResult.className = 'promo-result';
+    }, 5000);
+}
+
 function updateRollTimer() {
     const rollButton = document.getElementById('rollButton');
     const rollTimer = document.getElementById('rollTimer');
@@ -478,6 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initSlotMachine();
     initShop();
     initThemeToggles();
+    initPromoCodeSystem(); // Initialize promo code system
     
     console.log(`Coin rate: +${coin_rate} every 3 seconds`);
 });
