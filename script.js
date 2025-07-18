@@ -96,8 +96,8 @@ function spinWheel() {
     
     // Random rotation (5-10 full rotations + random segment)
     const rotations = 5 + Math.random() * 5;
-    const segmentAngle = 360 / 8; // 8 segments
-    const randomSegment = Math.floor(Math.random() * 8);
+    const segmentAngle = 360 / 9; // 9 segments
+    const randomSegment = Math.floor(Math.random() * 9);
     const finalAngle = rotations * 360 + (randomSegment * segmentAngle);
     
     // Apply rotation
