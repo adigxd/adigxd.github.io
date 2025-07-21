@@ -241,6 +241,10 @@ function showRollResult(outcome) {
     switch (outcome.action) {
         case 'add':
             message = `You won ${outcome.value} coins!`;
+            // Trigger coin rain if exactly 1000 coins
+            if (outcome.value === 1000) {
+                triggerCoinRain();
+            }
             break;
         case 'multiply':
             message = `Your coins were multiplied by ${outcome.value}!`;
@@ -267,6 +271,38 @@ function showRollResult(outcome) {
     
     rollResult.textContent = message;
     rollResult.style.color = getHighlightColor();
+}
+
+function triggerCoinRain() {
+    const numCoins = 18;
+    const durationMin = 700; // ms
+    const durationMax = 1300; // ms
+    const coinSize = 48;
+    for (let i = 0; i < numCoins; i++) {
+        const coin = document.createElement('img');
+        coin.src = 'resources/GIF-0_PRE.gif';
+        coin.style.position = 'fixed';
+        coin.style.left = `${Math.random() * 90 + 5}%`;
+        coin.style.top = '-60px';
+        coin.style.width = `${coinSize}px`;
+        coin.style.height = `${coinSize}px`;
+        coin.style.pointerEvents = 'none';
+        coin.style.zIndex = 9999;
+        // Random fall duration
+        const fallDuration = durationMin + Math.random() * (durationMax - durationMin);
+        coin.style.transition = `top ${fallDuration}ms cubic-bezier(0.4,0.7,0.6,1)`;
+        // Stagger start times for GIF randomness
+        const delay = Math.random() * 1200;
+        setTimeout(() => {
+            document.body.appendChild(coin);
+            setTimeout(() => {
+                coin.style.top = '100vh';
+            }, 10);
+            setTimeout(() => {
+                if (coin.parentNode) coin.parentNode.removeChild(coin);
+            }, fallDuration);
+        }, delay);
+    }
 }
 
 // SHA256 Hashing Function
