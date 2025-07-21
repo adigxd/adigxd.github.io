@@ -808,9 +808,9 @@ body.theme-gold .reaction-button {
     animation: goldShimmer 4s ease-in-out infinite;
     color: #fff;
 }
-body.theme-gold .reaction-rules {
+.reaction-rules {
     font-size: 1rem;
-    color: #ffb085;
+    color: #111;
     font-weight: normal;
     margin-top: 10px;
     display: block;
