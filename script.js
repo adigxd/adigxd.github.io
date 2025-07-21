@@ -623,7 +623,7 @@ function initReactionGame() {
             clearTimeout(reaction_timeout);
             reaction_state = 'idle';
             reaction_button.classList.remove('waiting', 'ready');
-            reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 300 ms = +1000 coins<br>&gt; 300 ms = lose all coins</span>';
+            reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 250 ms = +1000 coins<br>&gt; 250 ms = lose all coins</span>';
             reaction_splash.textContent = 'You clicked too early! You lost all your coins...';
             coin_amount = 0;
             localStorage.setItem('amount', coin_amount);
@@ -635,7 +635,7 @@ function initReactionGame() {
             if (reaction_time < 200) {
                 reward = 2000;
                 reaction_splash.textContent = `Amazing! ${reaction_time} ms. You earned 2000 coins!`;
-            } else if (reaction_time < 300) {
+            } else if (reaction_time < 250) {
                 reward = 1000;
                 reaction_splash.textContent = `Great! ${reaction_time} ms. You earned 1000 coins!`;
             } else {
@@ -656,7 +656,7 @@ function initReactionGame() {
     function resetReactionButton() {
         reaction_state = 'idle';
         reaction_button.classList.remove('waiting', 'ready');
-        reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 300 ms = +1000 coins<br>&gt; 300 ms = lose all coins</span>';
+        reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 250 ms = +1000 coins<br>&gt; 250 ms = lose all coins</span>';
     }
 }
 
