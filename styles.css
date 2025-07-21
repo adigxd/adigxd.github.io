@@ -724,6 +724,107 @@ body.theme-gold .slot-window {
     border-color: #FFA500;
 }
 
+/* Reaction Page Styles */
+.reaction-header {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #333;
+}
+
+.reaction-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 350px;
+    gap: 30px;
+}
+
+.reaction-splash {
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 10px;
+    color: #ff6b35;
+    overflow: hidden;
+}
+
+.reaction-button {
+    min-width: 320px;
+    min-height: 120px;
+    font-size: 1.6rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #ff6b35, #f7931e);
+    color: white;
+    box-shadow: 0 5px 20px rgba(255, 107, 53, 0.2);
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, filter 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.reaction-button.waiting {
+    background: #d32f2f;
+    color: #fff;
+}
+
+.reaction-button.ready {
+    background: #43a047;
+    color: #fff;
+}
+
+.reaction-rules {
+    font-size: 1rem;
+    color: #ffb085;
+    font-weight: normal;
+    margin-top: 10px;
+    display: block;
+}
+
+body.theme-blue .reaction-header {
+    color: #2196F3;
+}
+body.theme-mint .reaction-header {
+    color: #7FDBB6;
+}
+body.theme-gold .reaction-header {
+    color: #FFD700;
+    background: none;
+}
+body.theme-blue .reaction-splash {
+    color: #2196F3;
+}
+body.theme-mint .reaction-splash {
+    color: #7FDBB6;
+}
+body.theme-gold .reaction-splash {
+    color: #FFD700;
+}
+body.theme-blue .reaction-button {
+    background: linear-gradient(45deg, #2196F3, #03A9F4);
+}
+body.theme-mint .reaction-button {
+    background: linear-gradient(45deg, #7FDBB6, #A8E6CF);
+}
+body.theme-gold .reaction-button {
+    background: linear-gradient(45deg, #FFD700, #FFA500, #FF8C00, #FFD700, #FFA500, #FF8C00, #FFD700);
+    background-size: 300% 300%;
+    animation: goldShimmer 4s ease-in-out infinite;
+    color: #fff;
+}
+body.theme-gold .reaction-rules {
+    color: #ffe066;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .sidebar {
@@ -786,6 +887,21 @@ body.theme-gold .slot-window {
     .buy-button {
         width: 100%;
         text-align: center;
+    }
+
+    .reaction-button {
+        min-width: 180px;
+        min-height: 80px;
+        font-size: 1.1rem;
+        padding: 18px 8px;
+    }
+    .reaction-header {
+        font-size: 1.3rem;
+    }
+    .reaction-splash {
+        font-size: 1.1rem;
+        height: 30px;
+        line-height: 30px;
     }
 } 
 

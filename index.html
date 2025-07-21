@@ -22,6 +22,10 @@
             <i class="fas fa-shopping-cart"></i>
             <span>Shop</span>
         </div>
+        <div class="nav-item" id="reactionNav">
+            <i class="fas fa-stopwatch"></i>
+            <span>Reaction</span>
+        </div>
     </nav>
 
     <!-- Coin Display -->
@@ -154,6 +158,22 @@
                     <button id="promoButton" class="promo-button">Redeem</button>
                 </div>
                 <div class="promo-result" id="promoResult"></div>
+            </div>
+        </div>
+
+        <!-- Reaction Page -->
+        <div id="reaction-page" class="page">
+            <h1 class="reaction-header">Reaction</h1>
+            <div class="reaction-container">
+                <div class="reaction-splash" id="reactionSplash"></div>
+                <button class="reaction-button" id="reactionButton">
+                    Click to start the Reaction Time test!<br>
+                    <span class="reaction-rules">
+                        &lt; 200 ms = +2000 coins<br>
+                        &lt; 300 ms = +1000 coins<br>
+                        &gt; 300 ms = lose all coins
+                    </span>
+                </button>
             </div>
         </div>
     </main>

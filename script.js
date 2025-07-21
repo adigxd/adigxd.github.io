@@ -570,6 +570,82 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// --- Reaction Game ---
+let reaction_state = 'idle'; // 'idle', 'waiting', 'ready'
+let reaction_timeout = null;
+let reaction_start_time = null;
+
+function initReactionGame() {
+    const reaction_nav = document.getElementById('reactionNav');
+    const reaction_page = document.getElementById('reaction-page');
+    const reaction_button = document.getElementById('reactionButton');
+    const reaction_splash = document.getElementById('reactionSplash');
+
+    // Navigation
+    reaction_nav.addEventListener('click', () => {
+        setActivePage('reaction-page');
+    });
+
+    // Button logic
+    reaction_button.addEventListener('click', () => {
+        if (reaction_state === 'idle') {
+            // Start waiting
+            reaction_state = 'waiting';
+            reaction_button.classList.add('waiting');
+            reaction_button.classList.remove('ready');
+            reaction_button.innerHTML = 'Wait...';
+            reaction_splash.textContent = '';
+            // Random delay 3-6s
+            const delay = 3000 + Math.random() * 3000;
+            reaction_timeout = setTimeout(() => {
+                reaction_state = 'ready';
+                reaction_button.classList.remove('waiting');
+                reaction_button.classList.add('ready');
+                reaction_button.innerHTML = 'CLICK!';
+                reaction_start_time = Date.now();
+            }, delay);
+        } else if (reaction_state === 'waiting') {
+            // Clicked too early
+            clearTimeout(reaction_timeout);
+            reaction_state = 'idle';
+            reaction_button.classList.remove('waiting', 'ready');
+            reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 300 ms = +1000 coins<br>&gt; 300 ms = lose all coins</span>';
+            reaction_splash.textContent = 'You clicked too early! You lost all your coins...';
+            coin_amount = 0;
+            localStorage.setItem('amount', coin_amount);
+            updateCoinDisplay();
+        } else if (reaction_state === 'ready') {
+            // Measure reaction time
+            const reaction_time = Date.now() - reaction_start_time;
+            let reward = 0;
+            if (reaction_time < 200) {
+                reward = 2000;
+                reaction_splash.textContent = `Amazing! ${reaction_time} ms. You earned 2000 coins!`;
+            } else if (reaction_time < 300) {
+                reward = 1000;
+                reaction_splash.textContent = `Great! ${reaction_time} ms. You earned 1000 coins!`;
+            } else {
+                reaction_splash.textContent = `Too slow! ${reaction_time} ms. You lost all your coins...`;
+                coin_amount = 0;
+                localStorage.setItem('amount', coin_amount);
+                updateCoinDisplay();
+                resetReactionButton();
+                return;
+            }
+            coin_amount += reward;
+            localStorage.setItem('amount', coin_amount);
+            updateCoinDisplay();
+            resetReactionButton();
+        }
+    });
+
+    function resetReactionButton() {
+        reaction_state = 'idle';
+        reaction_button.classList.remove('waiting', 'ready');
+        reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 300 ms = +1000 coins<br>&gt; 300 ms = lose all coins</span>';
+    }
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     initCoinSystem();
@@ -578,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initShop();
     initThemeToggles();
     initPromoCodeSystem(); // Initialize promo code system
+    initReactionGame(); // Initialize reaction game
     
     console.log(`Coin rate: +${coin_rate} every 3 seconds`);
 });
