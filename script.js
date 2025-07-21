@@ -285,7 +285,7 @@ function showRollResult(outcome) {
 // Debug toggle for coin rain lines
 const COIN_RAIN_DEBUG_LINES = false;
 // Debug toggle for coin rain trigger (any positive increase)
-const COIN_RAIN_ALWAYS = true;
+const COIN_RAIN_ALWAYS = false;
 
 function triggerCoinRain() {
     const numCoins = 40;
