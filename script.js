@@ -581,11 +581,6 @@ function initReactionGame() {
     const reaction_button = document.getElementById('reactionButton');
     const reaction_splash = document.getElementById('reactionSplash');
 
-    // Navigation
-    reaction_nav.addEventListener('click', () => {
-        setActivePage('reaction-page');
-    });
-
     // Button logic
     reaction_button.addEventListener('click', () => {
         if (reaction_state === 'idle') {
