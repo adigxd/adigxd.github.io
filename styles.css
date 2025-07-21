@@ -809,7 +809,11 @@ body.theme-gold .reaction-button {
     color: #fff;
 }
 body.theme-gold .reaction-rules {
-    color: #ffe066;
+    font-size: 1rem;
+    color: #ffb085;
+    font-weight: normal;
+    margin-top: 10px;
+    display: block;
 }
 
 /* Responsive Design */
@@ -1024,19 +1028,5 @@ body.dark-mode.theme-gold .shop-header,
 body.dark-mode.theme-gold .roll-header,
 body.dark-mode.theme-gold .reaction-header {
     color: #FFD700;
-    background: none;
-} 
-
-.reaction-header {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 40px;
-    color: #cccccc !important;
-}
-
-body.theme-gold .reaction-header,
-body.theme-blue .reaction-header,
-body.theme-mint .reaction-header {
-    color: #cccccc !important;
     background: none;
 } 
