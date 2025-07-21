@@ -228,7 +228,8 @@ function applyRollResult(outcome) {
     
     // Ensure coin amount doesn't go negative
     if (coin_amount < 0) coin_amount = 0;
-    if (coin_rate < 0) coin_rate = 0;
+    // Ensure coin rate cannot go below 1
+    coin_rate = Math.max(coin_rate, 1);
     
     saveCoinData();
     updateCoinDisplay();
@@ -274,13 +275,13 @@ function showRollResult(outcome) {
 }
 
 function triggerCoinRain() {
-    const numCoins = 18;
-    const durationMin = 700; // ms
-    const durationMax = 1300; // ms
+    const numCoins = 40;
+    const durationMin = 2500; // ms
+    const durationMax = 3500; // ms
     const coinSize = 48;
     for (let i = 0; i < numCoins; i++) {
         const coin = document.createElement('img');
-        coin.src = 'resources/GIF-0_PRE.gif';
+        coin.src = 'resources/GIF-0_PST.gif'; // Use transparent/animated version
         coin.style.position = 'fixed';
         coin.style.left = `${Math.random() * 90 + 5}%`;
         coin.style.top = '-60px';
