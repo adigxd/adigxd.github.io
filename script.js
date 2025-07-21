@@ -199,16 +199,27 @@ function rollSlotMachine() {
 }
 
 function applyRollResult(outcome) {
+    let coin_increase = 0;
+    let before = coin_amount;
+    let shouldRain = false;
     switch (outcome.action) {
-        case 'add':
+        case 'add': {
+            coin_increase = outcome.value;
             coin_amount += outcome.value;
+            if (coin_increase >= 1000) shouldRain = true;
             break;
-        case 'multiply':
+        }
+        case 'multiply': {
             coin_amount = Math.floor(coin_amount * outcome.value);
+            coin_increase = coin_amount - before;
+            if (coin_increase >= 1000) shouldRain = true;
             break;
-        case 'divide':
+        }
+        case 'divide': {
             coin_amount = Math.floor(coin_amount / outcome.value);
+            coin_increase = coin_amount - before;
             break;
+        }
         case 'lose-all':
             coin_amount = 0;
             break;
@@ -225,12 +236,16 @@ function applyRollResult(outcome) {
             coin_rate = outcome.value;
             break;
     }
-    
     // Ensure coin amount doesn't go negative
     if (coin_amount < 0) coin_amount = 0;
     // Ensure coin rate cannot go below 1
     coin_rate = Math.max(coin_rate, 1);
-    
+    // Debug output
+    console.log('Roll outcome:', outcome, 'Before:', before, 'After:', coin_amount, 'Increase:', coin_increase);
+    // Trigger coin rain only for add/multiply
+    if (shouldRain) {
+        triggerCoinRain();
+    }
     saveCoinData();
     updateCoinDisplay();
 }
@@ -238,14 +253,9 @@ function applyRollResult(outcome) {
 function showRollResult(outcome) {
     const rollResult = document.getElementById('rollResult');
     let message = '';
-    
     switch (outcome.action) {
         case 'add':
             message = `You won ${outcome.value} coins!`;
-            // Trigger coin rain if exactly 1000 coins
-            if (outcome.value === 1000) {
-                triggerCoinRain();
-            }
             break;
         case 'multiply':
             message = `Your coins were multiplied by ${outcome.value}!`;
@@ -269,7 +279,6 @@ function showRollResult(outcome) {
             message = `Your coin rate was set to ${outcome.value}!`;
             break;
     }
-    
     rollResult.textContent = message;
     rollResult.style.color = getHighlightColor();
 }
