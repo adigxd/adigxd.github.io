@@ -201,18 +201,15 @@ function rollSlotMachine() {
 function applyRollResult(outcome) {
     let coin_increase = 0;
     let before = coin_amount;
-    let shouldRain = false;
     switch (outcome.action) {
         case 'add': {
             coin_increase = outcome.value;
             coin_amount += outcome.value;
-            if (coin_increase >= 1000) shouldRain = true;
             break;
         }
         case 'multiply': {
             coin_amount = Math.floor(coin_amount * outcome.value);
             coin_increase = coin_amount - before;
-            if (coin_increase >= 1000) shouldRain = true;
             break;
         }
         case 'divide': {
@@ -242,8 +239,10 @@ function applyRollResult(outcome) {
     coin_rate = Math.max(coin_rate, 1);
     // Debug output
     console.log('Roll outcome:', outcome, 'Before:', before, 'After:', coin_amount, 'Increase:', coin_increase);
-    // Trigger coin rain only for add/multiply
-    if (shouldRain) {
+    // Trigger coin rain based on debug toggle or normal logic
+    if (COIN_RAIN_ALWAYS) {
+        triggerCoinRain();
+    } else if ((outcome.action === 'add' || outcome.action === 'multiply') && coin_increase >= 1000) {
         triggerCoinRain();
     }
     saveCoinData();
@@ -283,6 +282,11 @@ function showRollResult(outcome) {
     rollResult.style.color = getHighlightColor();
 }
 
+// Debug toggle for coin rain lines
+const COIN_RAIN_DEBUG_LINES = true;
+// Debug toggle for coin rain trigger (any positive increase)
+const COIN_RAIN_ALWAYS = true;
+
 function triggerCoinRain() {
     const numCoins = 40;
     const durationMin = 2500; // ms
@@ -292,7 +296,8 @@ function triggerCoinRain() {
         const coin = document.createElement('img');
         coin.src = 'resources/GIF-0_PST.gif'; // Use transparent/animated version
         coin.style.position = 'fixed';
-        coin.style.left = `${Math.random() * 90 + 5}%`;
+        const leftPercent = Math.random() * 90 + 5;
+        coin.style.left = `${leftPercent}%`;
         coin.style.top = '-60px';
         coin.style.width = `${coinSize}px`;
         coin.style.height = `${coinSize}px`;
@@ -303,13 +308,40 @@ function triggerCoinRain() {
         coin.style.transition = `top ${fallDuration}ms cubic-bezier(0.4,0.7,0.6,1)`;
         // Stagger start times for GIF randomness
         const delay = Math.random() * 1200;
+
+        let line = null;
+        if (COIN_RAIN_DEBUG_LINES) {
+            // Create debug line trail
+            line = document.createElement('div');
+            line.style.position = 'fixed';
+            line.style.left = `calc(${leftPercent}% + ${coinSize/2 - 2}px)`;
+            line.style.top = '-60px';
+            line.style.width = '4px';
+            line.style.height = '0px';
+            line.style.background = getHighlightColor();
+            line.style.opacity = '0.4';
+            line.style.borderRadius = '2px';
+            line.style.zIndex = 9998;
+            line.style.pointerEvents = 'none';
+            line.style.transition = `height ${fallDuration}ms cubic-bezier(0.4,0.7,0.6,1), opacity 1s linear`;
+        }
+
         setTimeout(() => {
+            if (COIN_RAIN_DEBUG_LINES && line) document.body.appendChild(line);
             document.body.appendChild(coin);
             setTimeout(() => {
                 coin.style.top = '100vh';
+                if (COIN_RAIN_DEBUG_LINES && line) line.style.height = `calc(100vh + 60px)`;
             }, 10);
             setTimeout(() => {
                 if (coin.parentNode) coin.parentNode.removeChild(coin);
+                // Fade out and remove line
+                if (COIN_RAIN_DEBUG_LINES && line) {
+                    line.style.opacity = '0';
+                    setTimeout(() => {
+                        if (line.parentNode) line.parentNode.removeChild(line);
+                    }, 2000);
+                }
             }, fallDuration);
         }, delay);
     }
