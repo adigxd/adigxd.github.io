@@ -539,7 +539,7 @@ body.dark-mode .shop-item-info p {
 body.dark-mode .shop-header,
 body.dark-mode .projects-header,
 body.dark-mode .roll-header {
-    color: #e0e0e0;
+    color: #ccc;
 }
 
 /* Dark mode theme toggle active states */
@@ -729,7 +729,7 @@ body.theme-gold .slot-window {
     font-size: 2rem;
     text-align: center;
     margin-bottom: 40px;
-    color: #333;
+    color: #cccccc !important;
 }
 
 .reaction-container {
@@ -784,22 +784,33 @@ body.theme-gold .slot-window {
 
 .reaction-rules {
     font-size: 1rem;
-    color: #ffb085;
+    color: #111 !important;
     font-weight: normal;
     margin-top: 10px;
     display: block;
 }
 
-body.theme-blue .reaction-header {
-    color: #2196F3;
-}
+body.theme-gold .reaction-header,
+body.theme-blue .reaction-header,
 body.theme-mint .reaction-header {
-    color: #7FDBB6;
-}
-body.theme-gold .reaction-header {
-    color: #FFD700;
+    color: #cccccc !important;
     background: none;
 }
+
+body.theme-gold .reaction-rules {
+    color: #111 !important;
+}
+
+body.theme-gold .reaction-button.waiting,
+body.theme-gold .reaction-button.ready {
+    background: #d32f2f !important;
+    color: #fff !important;
+    animation: none !important;
+}
+body.theme-gold .reaction-button.ready {
+    background: #43a047 !important;
+}
+
 body.theme-blue .reaction-splash {
     color: #2196F3;
 }
