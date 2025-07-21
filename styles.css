@@ -772,22 +772,16 @@ body.theme-gold .slot-window {
     padding: 30px 20px;
 }
 
+/* Reaction button waiting/ready states: always red/green for all themes */
 .reaction-button.waiting {
-    background: #d32f2f;
-    color: #fff;
+    background: #d32f2f !important;
+    color: #fff !important;
+    animation: none !important;
 }
-
 .reaction-button.ready {
-    background: #43a047;
-    color: #fff;
-}
-
-.reaction-rules {
-    font-size: 1rem;
-    color: #111 !important;
-    font-weight: normal;
-    margin-top: 10px;
-    display: block;
+    background: #43a047 !important;
+    color: #fff !important;
+    animation: none !important;
 }
 
 body.theme-gold .reaction-header,
@@ -1002,4 +996,51 @@ body.theme-gold .buy-button:hover {
         background-position: 0% 50%; 
         filter: brightness(1) saturate(1);
     }
+} 
+
+/* Shop, Roll, Reaction headers: all caps, highlight color, both light and dark modes */
+.shop-header, .roll-header, .reaction-header {
+    text-transform: uppercase;
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #ff6b35;
+    letter-spacing: 1px;
+}
+body.theme-blue .shop-header,
+body.theme-blue .roll-header,
+body.theme-blue .reaction-header {
+    color: #2196F3;
+}
+body.theme-mint .shop-header,
+body.theme-mint .roll-header,
+body.theme-mint .reaction-header {
+    color: #7FDBB6;
+}
+body.theme-gold .shop-header,
+body.theme-gold .roll-header,
+body.theme-gold .reaction-header {
+    color: #FFD700;
+    background: none;
+}
+body.dark-mode .shop-header,
+body.dark-mode .roll-header,
+body.dark-mode .reaction-header {
+    color: #ff6b35;
+}
+body.dark-mode.theme-blue .shop-header,
+body.dark-mode.theme-blue .roll-header,
+body.dark-mode.theme-blue .reaction-header {
+    color: #2196F3;
+}
+body.dark-mode.theme-mint .shop-header,
+body.dark-mode.theme-mint .roll-header,
+body.dark-mode.theme-mint .reaction-header {
+    color: #7FDBB6;
+}
+body.dark-mode.theme-gold .shop-header,
+body.dark-mode.theme-gold .roll-header,
+body.dark-mode.theme-gold .reaction-header {
+    color: #FFD700;
+    background: none;
 } 

@@ -550,6 +550,25 @@ function applyTheme() {
     if (currentTheme !== 'default') {
         body.classList.add(`theme-${currentTheme.replace('_theme', '')}`);
     }
+    updateRollSplashColors();
+}
+
+function updateRollSplashColors() {
+    // Update roll-result splash text color
+    const rollResult = document.getElementById('rollResult');
+    if (rollResult) {
+        rollResult.style.color = getHighlightColor();
+    }
+    // Update the currently splashed slot item (font-size 28px)
+    const slotReel = document.getElementById('slotReel');
+    if (slotReel) {
+        const slotItems = slotReel.querySelectorAll('.slot-item');
+        slotItems.forEach(item => {
+            if (item.style.fontSize === '28px') {
+                item.style.color = getHighlightColor();
+            }
+        });
+    }
 }
 
 // Add animations
