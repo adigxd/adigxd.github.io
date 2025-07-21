@@ -1026,3 +1026,17 @@ body.dark-mode.theme-gold .reaction-header {
     color: #FFD700;
     background: none;
 } 
+
+.reaction-header {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 40px;
+    color: #cccccc !important;
+}
+
+body.theme-gold .reaction-header,
+body.theme-blue .reaction-header,
+body.theme-mint .reaction-header {
+    color: #cccccc !important;
+    background: none;
+} 
