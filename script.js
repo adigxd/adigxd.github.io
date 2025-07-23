@@ -685,7 +685,7 @@ function initReactionGame() {
             reaction_state = 'waiting';
             reaction_button.classList.add('waiting');
             reaction_button.classList.remove('ready');
-            reaction_button.innerHTML = 'Wait...';
+            reaction_button.innerHTML = 'Wait...<br><span class="reaction-wait-hint">Hold left click...</span>';
             reaction_splash.textContent = '';
             // Random delay 3-6s
             const delay = 3000 + Math.random() * 3000;
@@ -695,13 +695,24 @@ function initReactionGame() {
                 reaction_button.classList.add('ready');
                 reaction_button.innerHTML = 'CLICK!';
                 reaction_start_time = Date.now();
+                // Start 250ms timeout for auto-fail
+                reaction_timeout = setTimeout(() => {
+                    // If still in ready state, auto-fail
+                    if (reaction_state === 'ready') {
+                        reaction_splash.textContent = 'Too slow! You lost all your coins...';
+                        coin_amount = 0;
+                        localStorage.setItem('amount', coin_amount);
+                        updateCoinDisplay();
+                        resetReactionButton();
+                    }
+                }, 250);
             }, delay);
         } else if (reaction_state === 'waiting') {
             // Clicked too early
             clearTimeout(reaction_timeout);
             reaction_state = 'idle';
             reaction_button.classList.remove('waiting', 'ready');
-            reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 250 ms = +1000 coins<br>&gt; 250 ms = lose all coins</span>';
+            reaction_button.innerHTML = 'Click to start the Reaction time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 250 ms = +1000 coins<br>&gt; 250 ms = lose all coins</span>';
             reaction_splash.textContent = 'You clicked too early! You lost all your coins...';
             coin_amount = 0;
             localStorage.setItem('amount', coin_amount);
@@ -716,26 +727,181 @@ function initReactionGame() {
             } else if (reaction_time < 250) {
                 reward = 1000;
                 reaction_splash.textContent = `Great! ${reaction_time} ms. You earned 1000 coins!`;
-            } else {
-                reaction_splash.textContent = `Too slow! ${reaction_time} ms. You lost all your coins...`;
-                coin_amount = 0;
+            }
+            if (reward > 0) {
+                coin_amount += reward;
                 localStorage.setItem('amount', coin_amount);
                 updateCoinDisplay();
                 resetReactionButton();
-                return;
             }
-            coin_amount += reward;
-            localStorage.setItem('amount', coin_amount);
-            updateCoinDisplay();
-            resetReactionButton();
+            // No need for else: auto-fail handles >=250ms
         }
     });
 
     function resetReactionButton() {
         reaction_state = 'idle';
         reaction_button.classList.remove('waiting', 'ready');
-        reaction_button.innerHTML = 'Click to start the Reaction Time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 250 ms = +1000 coins<br>&gt; 250 ms = lose all coins</span>';
+        reaction_button.innerHTML = 'Click to start the Reaction time test!<br><span class="reaction-rules">&lt; 200 ms = +2000 coins<br>&lt; 250 ms = +1000 coins<br>&gt; 250 ms = lose all coins</span>';
     }
+}
+
+// --- Coin Tooltip ---
+document.addEventListener('DOMContentLoaded', () => {
+    const coinTooltip = document.getElementById('coinTooltip');
+    function updateTooltip() {
+        if (coinTooltip) coinTooltip.textContent = `Coin rate: ${coin_rate} per 3 sec`;
+    }
+    updateTooltip();
+    setInterval(updateTooltip, 1000);
+});
+
+// --- Background Toggle ---
+let currentBackground = 'none';
+const backgrounds = [
+    { key: 'none', label: 'None' },
+    { key: 'bg-ice-cream', label: 'Ice Cream', price: 12000, icon: 'fa-ice-cream' },
+    { key: 'bg-fire', label: 'Fire', price: 15000, icon: 'fa-fire' }
+];
+let purchasedBackgrounds = [];
+
+function initBackgroundToggle() {
+    const backgroundToggle = document.getElementById('backgroundToggle');
+    if (!backgroundToggle) return;
+    backgroundToggle.addEventListener('click', () => {
+        if (purchasedBackgrounds.length === 0) return;
+        const available = ['none', ...purchasedBackgrounds];
+        let idx = available.indexOf(currentBackground);
+        idx = (idx + 1) % available.length;
+        setBackground(available[idx]);
+        saveCoinData();
+    });
+}
+function setBackground(bgKey) {
+    document.body.classList.remove('bg-ice-cream', 'bg-fire');
+    if (bgKey && bgKey !== 'none') document.body.classList.add(bgKey);
+    currentBackground = bgKey;
+    localStorage.setItem('current_background', bgKey);
+}
+function loadBackground() {
+    const saved = localStorage.getItem('current_background');
+    if (saved && (saved === 'bg-ice-cream' || saved === 'bg-fire')) {
+        setBackground(saved);
+    } else {
+        setBackground('none');
+    }
+}
+
+// --- Shop Render & Logic ---
+function renderShopItems() {
+    const shopItems = [
+        { type: 'mode', key: 'dark_mode', name: 'Dark Mode', desc: 'Switch to dark theme', price: 3000 },
+        { type: 'theme', key: 'blue_theme', name: 'Blue Theme', desc: 'Blue highlight colors', price: 3000 },
+        { type: 'theme', key: 'mint_theme', name: 'Mint Theme', desc: 'Mint highlight colors', price: 3000 },
+        { type: 'theme', key: 'gold_theme', name: 'Fancy Gold Theme', desc: 'Gold gradient highlights', price: 15000 },
+        { type: 'background', key: 'bg-ice-cream', name: 'Ice Cream Background', desc: 'Ice cream wallpaper', price: 12000 },
+        { type: 'background', key: 'bg-fire', name: 'Fire Background', desc: 'Fire wallpaper', price: 15000 }
+    ];
+    // Sort by price, then by type (mode < theme < background)
+    shopItems.sort((a, b) => a.price - b.price || ['mode','theme','background'].indexOf(a.type) - ['mode','theme','background'].indexOf(b.type));
+    const shopList = document.querySelector('.shop-items');
+    if (!shopList) return;
+    shopList.innerHTML = '';
+    shopItems.forEach(item => {
+        const owned = (item.type === 'background' ? purchasedBackgrounds : purchasedThemes).includes(item.key);
+        const disabled = (item.type === 'background' ? purchasedBackgrounds : purchasedThemes).includes(item.key);
+        const div = document.createElement('div');
+        div.className = 'shop-item';
+        div.setAttribute('data-item', item.key);
+        div.setAttribute('data-price', item.price);
+        div.innerHTML = `
+            <div class="shop-item-info">
+                <h3>${item.name}</h3>
+                <p>${item.desc}</p>
+            </div>
+            <div class="shop-item-price">
+                <span class="price">${item.price}</span>
+                <button class="buy-button" data-item="${item.key}" ${owned ? 'disabled' : ''}>${owned ? 'Owned' : 'Buy'}</button>
+            </div>
+        `;
+        if (owned) div.style.opacity = '0.7';
+        shopList.appendChild(div);
+    });
+    // Add event listeners
+    document.querySelectorAll('.buy-button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.getAttribute('data-item');
+            const shopItem = btn.closest('.shop-item');
+            const price = parseInt(shopItem.getAttribute('data-price'));
+            if (item.startsWith('bg-')) {
+                if (coin_amount >= price && !purchasedBackgrounds.includes(item)) {
+                    coin_amount -= price;
+                    purchasedBackgrounds.push(item);
+                    btn.textContent = 'Owned';
+                    btn.disabled = true;
+                    shopItem.style.opacity = '0.7';
+                    saveCoinData();
+                    updateCoinDisplay();
+                    renderShopItems();
+                }
+            } else {
+                if (coin_amount >= price && !purchasedThemes.includes(item)) {
+                    coin_amount -= price;
+                    purchasedThemes.push(item);
+                    btn.textContent = 'Owned';
+                    btn.disabled = true;
+                    shopItem.style.opacity = '0.7';
+                    saveCoinData();
+                    updateCoinDisplay();
+                    updateThemeToggles();
+                    renderShopItems();
+                }
+            }
+        });
+    });
+}
+
+// --- Save/Load for backgrounds ---
+function saveCoinData() {
+    localStorage.setItem('amount', coin_amount.toString());
+    localStorage.setItem('rate', coin_rate.toString());
+    localStorage.setItem('dark_mode', darkMode.toString());
+    localStorage.setItem('current_theme', currentTheme);
+    localStorage.setItem('purchased_themes', JSON.stringify(purchasedThemes));
+    localStorage.setItem('purchased_backgrounds', JSON.stringify(purchasedBackgrounds));
+    localStorage.setItem('current_background', currentBackground);
+}
+function loadCoinData() {
+    // Load from localStorage with new snake_case keys
+    const savedAmount = localStorage.getItem('amount');
+    const savedRate = localStorage.getItem('rate');
+    const savedDarkMode = localStorage.getItem('dark_mode');
+    const savedTheme = localStorage.getItem('current_theme');
+    const savedPurchasedThemes = localStorage.getItem('purchased_themes');
+    const savedPurchasedBackgrounds = localStorage.getItem('purchased_backgrounds');
+    const savedCurrentBackground = localStorage.getItem('current_background');
+    
+    coin_amount = savedAmount ? parseInt(savedAmount) : 0;
+    coin_rate = savedRate ? parseInt(savedRate) : 1;
+    darkMode = savedDarkMode === 'true';
+    currentTheme = savedTheme || 'default';
+    purchasedThemes = savedPurchasedThemes ? JSON.parse(savedPurchasedThemes) : [];
+    purchasedBackgrounds = savedPurchasedBackgrounds ? JSON.parse(savedPurchasedBackgrounds) : [];
+    currentBackground = savedCurrentBackground || 'none';
+    
+    updateCoinDisplay();
+    updateThemeToggles();
+    applyTheme();
+    loadBackground();
+    renderShopItems();
+    
+    // Start the rate timer (every 3 seconds)
+    coinInterval = setInterval(() => {
+        if (coin_rate > 0) {
+            coin_amount += coin_rate;
+            saveCoinData();
+            updateCoinDisplay();
+        }
+    }, 3000);
 }
 
 // Initialize everything when DOM is loaded
@@ -747,6 +913,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemeToggles();
     initPromoCodeSystem(); // Initialize promo code system
     initReactionGame(); // Initialize reaction game
+    renderShopItems();
+    initBackgroundToggle();
+    loadBackground();
     
     console.log(`Coin rate: +${coin_rate} every 3 seconds`);
 });

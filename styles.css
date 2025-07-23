@@ -63,6 +63,7 @@ body {
     display: flex;
     align-items: center;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .coin-image {
@@ -76,6 +77,29 @@ body {
     font-weight: bold;
     font-size: 18px;
     color: #333;
+}
+
+.coin-tooltip {
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%) translateY(10px);
+    background: rgba(30,30,30,0.95);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-size: 1rem;
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+    transition: opacity 0.25s, transform 0.25s;
+    z-index: 10;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+}
+.coin-container:hover .coin-tooltip {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(18px);
 }
 
 .theme-toggles {
@@ -347,7 +371,18 @@ body {
     font-size: 1.5rem;
     text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    color: #666;
+}
+body.dark-mode .promo-header {
+    color: #ccc;
+}
+.promo-section .promo-divider {
+    border: none;
+    border-top: 2px solid #eee;
+    margin: 0 0 20px 0;
+}
+body.dark-mode .promo-section .promo-divider {
+    border-top: 2px solid #333;
 }
 
 .promo-input-container {
@@ -816,6 +851,14 @@ body.theme-gold .reaction-button {
     display: block;
 }
 
+.reaction-wait-hint {
+    font-size: 0.95rem;
+    color: #fff;
+    font-weight: normal;
+    margin-top: 8px;
+    display: block;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .sidebar {
@@ -1029,4 +1072,37 @@ body.dark-mode.theme-gold .roll-header,
 body.dark-mode.theme-gold .reaction-header {
     color: #FFD700;
     background: none;
+} 
+
+/* Background toggle and patterns */
+.background-toggle {
+    /* visually similar to .theme-toggle, but icon does not change on click */
+}
+
+/* Background patterns for body backgrounds */
+body.bg-ice-cream {
+    background-color: #f5f5f5;
+    background-image: repeating-linear-gradient(135deg, transparent 0 40px, #f7f7f7 40px 80px),
+        url('resources/bg-ice-cream.svg');
+    background-size: 120px 120px, 180px 180px;
+    background-repeat: repeat;
+    background-position: 0 0, 0 0;
+}
+body.bg-fire {
+    background-color: #1a1a1a;
+    background-image: repeating-linear-gradient(135deg, transparent 0 40px, #222 40px 80px),
+        url('resources/bg-fire.svg');
+    background-size: 120px 120px, 180px 180px;
+    background-repeat: repeat;
+    background-position: 0 0, 0 0;
+}
+body.dark-mode.bg-ice-cream {
+    background-color: #232323;
+    background-image: repeating-linear-gradient(135deg, transparent 0 40px, #292929 40px 80px),
+        url('resources/bg-ice-cream-dark.svg');
+}
+body.dark-mode.bg-fire {
+    background-color: #111;
+    background-image: repeating-linear-gradient(135deg, transparent 0 40px, #191919 40px 80px),
+        url('resources/bg-fire-dark.svg');
 } 

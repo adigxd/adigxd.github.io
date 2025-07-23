@@ -33,13 +33,17 @@
         <div class="coin-container">
             <img src="resources/coin.png" alt="Coin" class="coin-image">
             <span class="coin-amount" id="coinAmount">0</span>
+            <div class="coin-tooltip" id="coinTooltip">Coin rate: 1 per 3 sec</div>
         </div>
         <div class="theme-toggles">
-            <button class="theme-toggle" id="darkModeToggle" title="Dark Mode (1000 coins)">
+            <button class="theme-toggle" id="darkModeToggle" title="Dark Mode (3000 coins)">
                 <i class="fas fa-moon"></i>
             </button>
-            <button class="theme-toggle" id="colorToggle" title="Change Theme (1000 coins each)">
+            <button class="theme-toggle" id="colorToggle" title="Change Theme (3000 coins each, 15000 for gold)">
                 <i class="fas fa-palette"></i>
+            </button>
+            <button class="theme-toggle" id="backgroundToggle" title="Change Background (see shop)">
+                <i class="fas fa-ice-cream"></i>
             </button>
         </div>
     </div>
@@ -108,50 +112,12 @@
         <div id="shop-page" class="page">
             <h1 class="shop-header">Shop</h1>
             <div class="shop-items">
-                <div class="shop-item" data-item="dark_mode" data-price="1000">
-                    <div class="shop-item-info">
-                        <h3>Dark Mode</h3>
-                        <p>Switch to dark theme</p>
-                    </div>
-                    <div class="shop-item-price">
-                        <span class="price">1000</span>
-                        <button class="buy-button" data-item="dark_mode">Buy</button>
-                    </div>
-                </div>
-                <div class="shop-item" data-item="blue_theme" data-price="1000">
-                    <div class="shop-item-info">
-                        <h3>Blue Theme</h3>
-                        <p>Blue highlight colors</p>
-                    </div>
-                    <div class="shop-item-price">
-                        <span class="price">1000</span>
-                        <button class="buy-button" data-item="blue_theme">Buy</button>
-                    </div>
-                </div>
-                <div class="shop-item" data-item="mint_theme" data-price="1000">
-                    <div class="shop-item-info">
-                        <h3>Mint Theme</h3>
-                        <p>Mint highlight colors</p>
-                    </div>
-                    <div class="shop-item-price">
-                        <span class="price">1000</span>
-                        <button class="buy-button" data-item="mint_theme">Buy</button>
-                    </div>
-                </div>
-                <div class="shop-item" data-item="gold_theme" data-price="2000">
-                    <div class="shop-item-info">
-                        <h3>Fancy Gold Theme</h3>
-                        <p>Gold gradient highlights</p>
-                    </div>
-                    <div class="shop-item-price">
-                        <span class="price">2000</span>
-                        <button class="buy-button" data-item="gold_theme">Buy</button>
-                    </div>
-                </div>
+                <!-- Shop items will be dynamically rendered by JS for correct order and price -->
             </div>
             
             <!-- Promo Code Section -->
             <div class="promo-section">
+                <hr class="promo-divider">
                 <h2 class="promo-header">Promo Codes</h2>
                 <div class="promo-input-container">
                     <input type="text" id="promoInput" placeholder="Enter promo code..." class="promo-input">
@@ -167,7 +133,7 @@
             <div class="reaction-container">
                 <div class="reaction-splash" id="reactionSplash"></div>
                 <button class="reaction-button" id="reactionButton">
-                    Click to start the Reaction Time test!<br>
+                    Click to start the Reaction time test!<br>
                     <span class="reaction-rules">
                         &lt; 200 ms = +2000 coins<br>
                         &lt; 250 ms = +1000 coins<br>
