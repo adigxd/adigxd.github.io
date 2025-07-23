@@ -749,45 +749,45 @@ function initReactionGame() {
 document.addEventListener('DOMContentLoaded', () => {
     const coinTooltip = document.getElementById('coinTooltip');
     function updateTooltip() {
-        if (coinTooltip) coinTooltip.textContent = `Coin rate: ${coin_rate} per 3 sec`;
+        if (coinTooltip) coinTooltip.textContent = `Coin rate: ${coin_rate} every 3 seconds`;
     }
     updateTooltip();
     setInterval(updateTooltip, 1000);
 });
 
-// --- Background Toggle ---
-let currentBackground = 'none';
-const backgrounds = [
+// --- Wallpaper Toggle ---
+let currentWallpaper = 'none';
+const wallpapers = [
     { key: 'none', label: 'None' },
-    { key: 'bg-ice-cream', label: 'Ice Cream', price: 12000, icon: 'fa-ice-cream' },
-    { key: 'bg-fire', label: 'Fire', price: 15000, icon: 'fa-fire' }
+    { key: 'wp-ice-cream', label: 'Ice Cream', price: 12000, icon: 'fa-ice-cream' },
+    { key: 'wp-fire', label: 'Fire', price: 15000, icon: 'fa-fire' }
 ];
-let purchasedBackgrounds = [];
+let purchasedWallpapers = [];
 
-function initBackgroundToggle() {
-    const backgroundToggle = document.getElementById('backgroundToggle');
-    if (!backgroundToggle) return;
-    backgroundToggle.addEventListener('click', () => {
-        if (purchasedBackgrounds.length === 0) return;
-        const available = ['none', ...purchasedBackgrounds];
-        let idx = available.indexOf(currentBackground);
+function initWallpaperToggle() {
+    const wallpaperToggle = document.getElementById('wallpaperToggle');
+    if (!wallpaperToggle) return;
+    wallpaperToggle.addEventListener('click', () => {
+        if (purchasedWallpapers.length === 0) return;
+        const available = ['none', ...purchasedWallpapers];
+        let idx = available.indexOf(currentWallpaper);
         idx = (idx + 1) % available.length;
-        setBackground(available[idx]);
+        setWallpaper(available[idx]);
         saveCoinData();
     });
 }
-function setBackground(bgKey) {
-    document.body.classList.remove('bg-ice-cream', 'bg-fire');
-    if (bgKey && bgKey !== 'none') document.body.classList.add(bgKey);
-    currentBackground = bgKey;
-    localStorage.setItem('current_background', bgKey);
+function setWallpaper(wpKey) {
+    document.body.classList.remove('wp-ice-cream', 'wp-fire');
+    if (wpKey && wpKey !== 'none') document.body.classList.add(wpKey);
+    currentWallpaper = wpKey;
+    localStorage.setItem('current_wallpaper', wpKey);
 }
-function loadBackground() {
-    const saved = localStorage.getItem('current_background');
-    if (saved && (saved === 'bg-ice-cream' || saved === 'bg-fire')) {
-        setBackground(saved);
+function loadWallpaper() {
+    const saved = localStorage.getItem('current_wallpaper');
+    if (saved && (saved === 'wp-ice-cream' || saved === 'wp-fire')) {
+        setWallpaper(saved);
     } else {
-        setBackground('none');
+        setWallpaper('none');
     }
 }
 
@@ -798,17 +798,17 @@ function renderShopItems() {
         { type: 'theme', key: 'blue_theme', name: 'Blue Theme', desc: 'Blue highlight colors', price: 3000 },
         { type: 'theme', key: 'mint_theme', name: 'Mint Theme', desc: 'Mint highlight colors', price: 3000 },
         { type: 'theme', key: 'gold_theme', name: 'Fancy Gold Theme', desc: 'Gold gradient highlights', price: 15000 },
-        { type: 'background', key: 'bg-ice-cream', name: 'Ice Cream Background', desc: 'Ice cream wallpaper', price: 12000 },
-        { type: 'background', key: 'bg-fire', name: 'Fire Background', desc: 'Fire wallpaper', price: 15000 }
+        { type: 'wallpaper', key: 'wp-ice-cream', name: 'Ice Cream Wallpaper', desc: 'Ice cream wallpaper', price: 12000 },
+        { type: 'wallpaper', key: 'wp-fire', name: 'Fire Wallpaper', desc: 'Fire wallpaper', price: 15000 }
     ];
-    // Sort by price, then by type (mode < theme < background)
-    shopItems.sort((a, b) => a.price - b.price || ['mode','theme','background'].indexOf(a.type) - ['mode','theme','background'].indexOf(b.type));
+    // Sort by price, then by type (mode < theme < wallpaper)
+    shopItems.sort((a, b) => a.price - b.price || ['mode','theme','wallpaper'].indexOf(a.type) - ['mode','theme','wallpaper'].indexOf(b.type));
     const shopList = document.querySelector('.shop-items');
     if (!shopList) return;
     shopList.innerHTML = '';
     shopItems.forEach(item => {
-        const owned = (item.type === 'background' ? purchasedBackgrounds : purchasedThemes).includes(item.key);
-        const disabled = (item.type === 'background' ? purchasedBackgrounds : purchasedThemes).includes(item.key);
+        const owned = (item.type === 'wallpaper' ? purchasedWallpapers : purchasedThemes).includes(item.key);
+        const disabled = (item.type === 'wallpaper' ? purchasedWallpapers : purchasedThemes).includes(item.key);
         const div = document.createElement('div');
         div.className = 'shop-item';
         div.setAttribute('data-item', item.key);
@@ -832,10 +832,10 @@ function renderShopItems() {
             const item = btn.getAttribute('data-item');
             const shopItem = btn.closest('.shop-item');
             const price = parseInt(shopItem.getAttribute('data-price'));
-            if (item.startsWith('bg-')) {
-                if (coin_amount >= price && !purchasedBackgrounds.includes(item)) {
+            if (item.startsWith('wp-')) {
+                if (coin_amount >= price && !purchasedWallpapers.includes(item)) {
                     coin_amount -= price;
-                    purchasedBackgrounds.push(item);
+                    purchasedWallpapers.push(item);
                     btn.textContent = 'Owned';
                     btn.disabled = true;
                     shopItem.style.opacity = '0.7';
@@ -860,15 +860,15 @@ function renderShopItems() {
     });
 }
 
-// --- Save/Load for backgrounds ---
+// --- Save/Load for wallpapers ---
 function saveCoinData() {
     localStorage.setItem('amount', coin_amount.toString());
     localStorage.setItem('rate', coin_rate.toString());
     localStorage.setItem('dark_mode', darkMode.toString());
     localStorage.setItem('current_theme', currentTheme);
     localStorage.setItem('purchased_themes', JSON.stringify(purchasedThemes));
-    localStorage.setItem('purchased_backgrounds', JSON.stringify(purchasedBackgrounds));
-    localStorage.setItem('current_background', currentBackground);
+    localStorage.setItem('purchased_wallpapers', JSON.stringify(purchasedWallpapers));
+    localStorage.setItem('current_wallpaper', currentWallpaper);
 }
 function loadCoinData() {
     // Load from localStorage with new snake_case keys
@@ -877,21 +877,21 @@ function loadCoinData() {
     const savedDarkMode = localStorage.getItem('dark_mode');
     const savedTheme = localStorage.getItem('current_theme');
     const savedPurchasedThemes = localStorage.getItem('purchased_themes');
-    const savedPurchasedBackgrounds = localStorage.getItem('purchased_backgrounds');
-    const savedCurrentBackground = localStorage.getItem('current_background');
+    const savedPurchasedWallpapers = localStorage.getItem('purchased_wallpapers');
+    const savedCurrentWallpaper = localStorage.getItem('current_wallpaper');
     
     coin_amount = savedAmount ? parseInt(savedAmount) : 0;
     coin_rate = savedRate ? parseInt(savedRate) : 1;
     darkMode = savedDarkMode === 'true';
     currentTheme = savedTheme || 'default';
     purchasedThemes = savedPurchasedThemes ? JSON.parse(savedPurchasedThemes) : [];
-    purchasedBackgrounds = savedPurchasedBackgrounds ? JSON.parse(savedPurchasedBackgrounds) : [];
-    currentBackground = savedCurrentBackground || 'none';
+    purchasedWallpapers = savedPurchasedWallpapers ? JSON.parse(savedPurchasedWallpapers) : [];
+    currentWallpaper = savedCurrentWallpaper || 'none';
     
     updateCoinDisplay();
     updateThemeToggles();
     applyTheme();
-    loadBackground();
+    loadWallpaper();
     renderShopItems();
     
     // Start the rate timer (every 3 seconds)
@@ -914,8 +914,8 @@ document.addEventListener('DOMContentLoaded', () => {
     initPromoCodeSystem(); // Initialize promo code system
     initReactionGame(); // Initialize reaction game
     renderShopItems();
-    initBackgroundToggle();
-    loadBackground();
+    initWallpaperToggle();
+    loadWallpaper();
     
     console.log(`Coin rate: +${coin_rate} every 3 seconds`);
 });
