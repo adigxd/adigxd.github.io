@@ -597,7 +597,8 @@ function updateThemeToggles() {
     }
     
     // Update color toggle
-    if (purchasedThemes.length > 0) {
+    const hasHighlight = purchasedThemes.includes('blue_theme') || purchasedThemes.includes('mint_theme') || purchasedThemes.includes('gold_theme');
+    if (hasHighlight) {
         colorToggle.classList.remove('disabled');
         colorToggle.classList.add('active');
     } else {

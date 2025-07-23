@@ -1085,8 +1085,8 @@ body.wp-ice-cream {
     background-image:
         url('resources/SVG-L-Ice_Cream.svg'),
         url('resources/SVG-L-Ice_Cream.svg');
-    background-size: 180px 180px, 180px 180px;
-    background-position: 0 0, 90px 90px;
+    background-size: 80px 80px, 80px 80px;
+    background-position: 0 0, 40px 40px;
     background-repeat: repeat, repeat;
 }
 body.wp-fire {
@@ -1094,8 +1094,8 @@ body.wp-fire {
     background-image:
         url('resources/SVG-L-Fire.svg'),
         url('resources/SVG-L-Fire.svg');
-    background-size: 180px 180px, 180px 180px;
-    background-position: 0 0, 90px 90px;
+    background-size: 80px 80px, 80px 80px;
+    background-position: 0 0, 40px 40px;
     background-repeat: repeat, repeat;
 }
 body.dark-mode.wp-ice-cream {
@@ -1103,8 +1103,8 @@ body.dark-mode.wp-ice-cream {
     background-image:
         url('resources/SVG-D-Ice_Cream.svg'),
         url('resources/SVG-D-Ice_Cream.svg');
-    background-size: 180px 180px, 180px 180px;
-    background-position: 0 0, 90px 90px;
+    background-size: 80px 80px, 80px 80px;
+    background-position: 0 0, 40px 40px;
     background-repeat: repeat, repeat;
 }
 body.dark-mode.wp-fire {
@@ -1112,7 +1112,7 @@ body.dark-mode.wp-fire {
     background-image:
         url('resources/SVG-D-Fire.svg'),
         url('resources/SVG-D-Fire.svg');
-    background-size: 180px 180px, 180px 180px;
-    background-position: 0 0, 90px 90px;
+    background-size: 80px 80px, 80px 80px;
+    background-position: 0 0, 40px 40px;
     background-repeat: repeat, repeat;
 } 
