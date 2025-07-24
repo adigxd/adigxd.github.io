@@ -734,6 +734,19 @@ function initReactionGame() {
             resetReactionButton();
         }
     });
+    // Also trigger 'clicked too early' if user holds (mousedown) during waiting
+    reaction_button.addEventListener('mousedown', (e) => {
+        if (reaction_state === 'waiting' && e.button === 0) { // left mouse button
+            clearTimeout(reaction_timeout);
+            reaction_state = 'idle';
+            reaction_button.classList.remove('waiting', 'ready');
+            reaction_button.innerHTML = 'Click to start the Reaction time test!<br><span class="reaction-rules">&lt; 200 ms = +3000 coins<br>&lt; 250 ms = +2000 coins<br>&lt; 300 ms = +1000 coins<br>&gt;= 300 ms = lose all coins</span>';
+            reaction_splash.textContent = 'You clicked too early! You lost all your coins...';
+            coin_amount = 0;
+            localStorage.setItem('amount', coin_amount);
+            updateCoinDisplay();
+        }
+    });
 
     function resetReactionButton() {
         reaction_state = 'idle';
