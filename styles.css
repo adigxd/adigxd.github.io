@@ -1074,37 +1074,29 @@ body.dark-mode.theme-gold .reaction-header {
 /* Background patterns for body backgrounds */
 body.wp-ice-cream {
     background-color: #f5f5f5;
-    background-image:
-        url('resources/SVG-L-Ice_Cream.svg'),
-        url('resources/SVG-L-Ice_Cream.svg');
-    background-size: 80px 80px, 80px 80px;
-    background-position: 0 0, 40px 40px;
-    background-repeat: repeat, repeat;
+    background-image: url('resources/SVG-L-Ice_Cream.svg');
+    background-size: 200px 200px;
+    background-position: 0 0;
+    background-repeat: repeat;
 }
 body.wp-fire {
     background-color: #f5f5f5;
-    background-image:
-        url('resources/SVG-L-Fire.svg'),
-        url('resources/SVG-L-Fire.svg');
-    background-size: 80px 80px, 80px 80px;
-    background-position: 0 0, 40px 40px;
-    background-repeat: repeat, repeat;
+    background-image: url('resources/SVG-L-Fire.svg');
+    background-size: 200px 200px;
+    background-position: 0 0;
+    background-repeat: repeat;
 }
 body.dark-mode.wp-ice-cream {
     background-color: #1a1a1a;
-    background-image:
-        url('resources/SVG-D-Ice_Cream.svg'),
-        url('resources/SVG-D-Ice_Cream.svg');
-    background-size: 80px 80px, 80px 80px;
-    background-position: 0 0, 40px 40px;
-    background-repeat: repeat, repeat;
+    background-image: url('resources/SVG-D-Ice_Cream.svg');
+    background-size: 200px 200px;
+    background-position: 0 0;
+    background-repeat: repeat;
 }
 body.dark-mode.wp-fire {
     background-color: #1a1a1a;
-    background-image:
-        url('resources/SVG-D-Fire.svg'),
-        url('resources/SVG-D-Fire.svg');
-    background-size: 80px 80px, 80px 80px;
-    background-position: 0 0, 40px 40px;
-    background-repeat: repeat, repeat;
+    background-image: url('resources/SVG-D-Fire.svg');
+    background-size: 200px 200px;
+    background-position: 0 0;
+    background-repeat: repeat;
 } 

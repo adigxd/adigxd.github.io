@@ -18,16 +18,22 @@ function initCoinSystem() {
     const savedDarkMode = localStorage.getItem('dark_mode');
     const savedTheme = localStorage.getItem('current_theme');
     const savedPurchasedThemes = localStorage.getItem('purchased_themes');
+    const savedPurchasedWallpapers = localStorage.getItem('purchased_wallpapers');
+    const savedCurrentWallpaper = localStorage.getItem('current_wallpaper');
     
     coin_amount = savedAmount ? parseInt(savedAmount) : 0;
     coin_rate = savedRate ? parseInt(savedRate) : 1;
     darkMode = savedDarkMode === 'true';
     currentTheme = savedTheme || 'default';
     purchasedThemes = savedPurchasedThemes ? JSON.parse(savedPurchasedThemes) : [];
+    purchasedWallpapers = savedPurchasedWallpapers ? JSON.parse(savedPurchasedWallpapers) : [];
+    currentWallpaper = savedCurrentWallpaper || 'none';
     
     updateCoinDisplay();
     updateThemeToggles();
     applyTheme();
+    loadWallpaper();
+    renderShopItems();
     
     // Start the rate timer (every 3 seconds)
     coinInterval = setInterval(() => {
@@ -46,6 +52,8 @@ function saveCoinData() {
     localStorage.setItem('dark_mode', darkMode.toString());
     localStorage.setItem('current_theme', currentTheme);
     localStorage.setItem('purchased_themes', JSON.stringify(purchasedThemes));
+    localStorage.setItem('purchased_wallpapers', JSON.stringify(purchasedWallpapers));
+    localStorage.setItem('current_wallpaper', currentWallpaper);
 }
 
 // Update coin display
@@ -358,6 +366,7 @@ async function sha256(message) {
 
 // Promo Code System
 const promoCodes = {
+    'fa39a7be5a69ca50404ba06e1b4139bd4c6c1ed63d0b82f5618172b1d7d8cd5b': 16384,
     '099dff277c3cde879901c60791f5e1e1920d395a9fe9e84c4902a0b46a23ca69': 9270,
     'd75e1756b21c97ccc78ed6af6bb88eb1cb8fd84f9ec023de75d356875d312d6a': 1000,
     'a37a2500c9e50b1d729a6510adb91c884349aa5eda25f86f595a879f8e2c8d72': 4130
@@ -586,6 +595,7 @@ function initThemeToggles() {
 function updateThemeToggles() {
     const darkModeToggle = document.getElementById('darkModeToggle');
     const colorToggle = document.getElementById('colorToggle');
+    const wallpaperToggle = document.getElementById('wallpaperToggle');
     
     // Update dark mode toggle
     if (purchasedThemes.includes('dark_mode')) {
@@ -604,6 +614,15 @@ function updateThemeToggles() {
     } else {
         colorToggle.classList.add('disabled');
         colorToggle.classList.remove('active');
+    }
+    
+    // Update wallpaper toggle
+    if (purchasedWallpapers.length > 0) {
+        wallpaperToggle.classList.remove('disabled');
+        wallpaperToggle.classList.add('active');
+    } else {
+        wallpaperToggle.classList.add('disabled');
+        wallpaperToggle.classList.remove('active');
     }
 }
 
@@ -672,6 +691,7 @@ document.head.appendChild(style);
 let reaction_state = 'idle'; // 'idle', 'waiting', 'ready'
 let reaction_timeout = null;
 let reaction_start_time = null;
+let reaction_mousedown_handled = false; // Flag to prevent double handling
 
 function initReactionGame() {
     const reaction_nav = document.getElementById('reactionNav');
@@ -681,6 +701,12 @@ function initReactionGame() {
 
     // Button logic
     reaction_button.addEventListener('click', () => {
+        // Skip if mousedown already handled this
+        if (reaction_mousedown_handled) {
+            reaction_mousedown_handled = false;
+            return;
+        }
+        
         if (reaction_state === 'idle') {
             // Start waiting
             reaction_state = 'waiting';
@@ -734,9 +760,11 @@ function initReactionGame() {
             resetReactionButton();
         }
     });
+    
     // Also trigger 'clicked too early' if user holds (mousedown) during waiting
     reaction_button.addEventListener('mousedown', (e) => {
         if (reaction_state === 'waiting' && e.button === 0) { // left mouse button
+            reaction_mousedown_handled = true; // Set flag to prevent click handler
             clearTimeout(reaction_timeout);
             reaction_state = 'idle';
             reaction_button.classList.remove('waiting', 'ready');
@@ -795,7 +823,12 @@ function setWallpaper(wpKey) {
 function loadWallpaper() {
     const saved = localStorage.getItem('current_wallpaper');
     if (saved && (saved === 'wp-ice-cream' || saved === 'wp-fire')) {
-        setWallpaper(saved);
+        // Only apply wallpaper if it's actually purchased
+        if (purchasedWallpapers.includes(saved)) {
+            setWallpaper(saved);
+        } else {
+            setWallpaper('none');
+        }
     } else {
         setWallpaper('none');
     }
@@ -851,6 +884,7 @@ function renderShopItems() {
                     shopItem.style.opacity = '0.7';
                     saveCoinData();
                     updateCoinDisplay();
+                    updateThemeToggles();
                     renderShopItems();
                 }
             } else {
@@ -880,39 +914,6 @@ function saveCoinData() {
     localStorage.setItem('purchased_wallpapers', JSON.stringify(purchasedWallpapers));
     localStorage.setItem('current_wallpaper', currentWallpaper);
 }
-function loadCoinData() {
-    // Load from localStorage with new snake_case keys
-    const savedAmount = localStorage.getItem('amount');
-    const savedRate = localStorage.getItem('rate');
-    const savedDarkMode = localStorage.getItem('dark_mode');
-    const savedTheme = localStorage.getItem('current_theme');
-    const savedPurchasedThemes = localStorage.getItem('purchased_themes');
-    const savedPurchasedWallpapers = localStorage.getItem('purchased_wallpapers');
-    const savedCurrentWallpaper = localStorage.getItem('current_wallpaper');
-    
-    coin_amount = savedAmount ? parseInt(savedAmount) : 0;
-    coin_rate = savedRate ? parseInt(savedRate) : 1;
-    darkMode = savedDarkMode === 'true';
-    currentTheme = savedTheme || 'default';
-    purchasedThemes = savedPurchasedThemes ? JSON.parse(savedPurchasedThemes) : [];
-    purchasedWallpapers = savedPurchasedWallpapers ? JSON.parse(savedPurchasedWallpapers) : [];
-    currentWallpaper = savedCurrentWallpaper || 'none';
-    
-    updateCoinDisplay();
-    updateThemeToggles();
-    applyTheme();
-    loadWallpaper();
-    renderShopItems();
-    
-    // Start the rate timer (every 3 seconds)
-    coinInterval = setInterval(() => {
-        if (coin_rate > 0) {
-            coin_amount += coin_rate;
-            saveCoinData();
-            updateCoinDisplay();
-        }
-    }, 3000);
-}
 
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
@@ -923,9 +924,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initThemeToggles();
     initPromoCodeSystem(); // Initialize promo code system
     initReactionGame(); // Initialize reaction game
-    renderShopItems();
     initWallpaperToggle();
-    loadWallpaper();
     
     console.log(`Coin rate: +${coin_rate} every 3 seconds`);
 });
