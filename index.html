@@ -5,141 +5,95 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Adigxd - GitHub Pages</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
+    <!-- Header Banner -->
+    <header class="header-banner">
+        <div class="header-controls">
+            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+                <span class="toggle-icon">☰</span>
+            </button>
+            <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
+                <span class="dark-mode-switch">
+                    <span class="dark-mode-slider"></span>
+                </span>
+            </button>
+        </div>
+        <div class="header-icons">
+            <a href="https://linkedin.com/in/adigxd" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                    <rect x="2" y="9" width="4" height="12"></rect>
+                    <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+            </a>
+            <a href="https://github.com/adigxd" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+            </a>
+        </div>
+    </header>
+
     <!-- Sidebar Navigation -->
-    <nav class="sidebar">
-        <div class="nav-item active" data-page="home">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </div>
-        <div class="nav-item" data-page="roll">
-            <i class="fas fa-dice"></i>
-            <span>Roll</span>
-        </div>
-        <div class="nav-item" data-page="reaction" id="reactionNav">
-            <i class="fas fa-stopwatch"></i>
-            <span>Reaction</span>
-        </div>
-        <div class="nav-item" data-page="shop">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Shop</span>
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-section">
+                <div class="section-header" data-section="welcome">
+                    <span>Welcome</span>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-subsections">
+                    <a href="#" class="subsection-link active" data-page="home">Home</a>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="section-header" data-section="2025">
+                    <span>2025</span>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-subsections">
+                    <a href="#" class="subsection-link" data-page="biology-search-engine">Biology's Search Engine</a>
+                    <a href="#" class="subsection-link" data-page="aws-administrator">AWS Administrator</a>
+                    <a href="#" class="subsection-link" data-page="sharepoint-powerbi">SharePoint & Power BI Administrator</a>
+                    <a href="#" class="subsection-link" data-page="business-intelligence-webapp">Business Intelligence Web App</a>
+                    <a href="#" class="subsection-link" data-page="internal-survey-platform">Internal Survey Platform</a>
+                    <a href="#" class="subsection-link" data-page="alumni-outreach-platform">Alumni Outreach Platform</a>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="section-header" data-section="2024">
+                    <span>2024</span>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-subsections">
+                    <a href="#" class="subsection-link" data-page="workato-aof">Workato: AOF</a>
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <div class="section-header" data-section="hobbies">
+                    <span>Hobbies</span>
+                    <span class="section-arrow">▼</span>
+                </div>
+                <div class="section-subsections">
+                    <a href="#" class="subsection-link" data-page="this-website">This Website</a>
+                    <a href="#" class="subsection-link" data-page="zmap">zmap</a>
+                    <a href="#" class="subsection-link" data-page="voxelbulb">Voxelbulb</a>
+                    <a href="#" class="subsection-link" data-page="arena">Arena</a>
+                </div>
+            </div>
         </div>
     </nav>
 
-    <!-- Coin Display -->
-    <div class="coin-display">
-        <div class="coin-container">
-            <img src="resources/coin.png" alt="Coin" class="coin-image">
-            <span class="coin-amount" id="coinAmount">0</span>
-            <div class="coin-tooltip" id="coinTooltip">Coin rate: 1 every 3 seconds</div>
-        </div>
-        <div class="theme-toggles">
-            <button class="theme-toggle" id="darkModeToggle" title="Dark Mode (3000 coins)">
-                <i class="fas fa-moon"></i>
-            </button>
-            <button class="theme-toggle" id="colorToggle" title="Change Theme (3000 coins each, 15000 for gold)">
-                <i class="fas fa-palette"></i>
-            </button>
-            <button class="theme-toggle" id="wallpaperToggle" title="Change Wallpaper (see shop)">
-                <i class="fas fa-file"></i>
-            </button>
-        </div>
-    </div>
-
     <!-- Main Content -->
     <main class="main-content">
-        <!-- Home Page -->
-        <div id="home-page" class="page active">
-            <h1 class="welcome-header">Welcome!</h1>
-            <h2 class="subheader">Thanks for stopping by my GitHub Page</h2>
-            <br>
-            <h2 class="projects-header">Current Projects...</h2>
-            
-            <div class="projects-grid">
-                <a href="https://github.com/adigxd/NextBI" target="_blank" class="project-box">
-                    <i class="fab fa-react"></i>
-                    <h3>NextBI</h3>
-                </a>
-                <a href="https://github.com/adigxd/Voxelbulb" target="_blank" class="project-box">
-                    <i class="fas fa-cube"></i>
-                    <h3>Voxelbulb</h3>
-                </a>
-                <a href="https://github.com/adigxd/Arena" target="_blank" class="project-box">
-                    <i class="fas fa-gamepad"></i>
-                    <h3>Arena</h3>
-                </a>
-                <a href="https://github.com/adigxd/CareerTree-py" target="_blank" class="project-box">
-                    <i class="fas fa-brain"></i>
-                    <h3>Career Tree</h3>
-                </a>
-            </div>
-        </div>
-
-        <!-- Roll Page -->
-        <div id="roll-page" class="page">
-            <h1 class="roll-header">Roll</h1>
-            <div class="slot-container">
-                <div class="slot-machine">
-                    <div class="decorative-line"></div>
-                    <div class="decorative-line"></div>
-                    <div class="slot-window">
-                        <div class="slot-reel" id="slotReel">
-                            <div class="slot-item">+10 coins</div>
-                            <div class="slot-item">+100 coins</div>
-                            <div class="slot-item">+1000 coins</div>
-                            <div class="slot-item">coins × 2</div>
-                            <div class="slot-item">coins × 5</div>
-                            <div class="slot-item">lose all coins</div>
-                            <div class="slot-item">coins ÷ 2</div>
-                            <div class="slot-item">coins ÷ 5</div>
-                            <div class="slot-item">coin rate +1</div>
-                            <div class="slot-item">coin rate +10</div>
-                            <div class="slot-item">coin rate × 2</div>
-                            <div class="slot-item">coin rate ÷ 2</div>
-                            <div class="slot-item">coin rate = 1</div>
-                        </div>
-                    </div>
-                </div>
-                <button class="roll-button" id="rollButton">ROLL!</button>
-                <div class="roll-timer" id="rollTimer"></div>
-            </div>
-            <div class="roll-result" id="rollResult"></div>
-        </div>
-
-        <!-- Shop Page -->
-        <div id="shop-page" class="page">
-            <h1 class="shop-header">Shop</h1>
-            <div class="shop-items">
-                <!-- Shop items will be dynamically rendered by JS for correct order and price -->
-            </div>
-            
-            <!-- Promo Code Section -->
-            <div class="promo-section">
-                <h2 class="promo-header">Promo Codes</h2>
-                <div class="promo-input-container">
-                    <input type="text" id="promoInput" placeholder="Enter promo code..." class="promo-input">
-                    <button id="promoButton" class="promo-button">Redeem</button>
-                </div>
-                <div class="promo-result" id="promoResult"></div>
-            </div>
-        </div>
-
-        <!-- Reaction Page -->
-        <div id="reaction-page" class="page" data-page="reaction">
-            <h1 class="reaction-header">Reaction</h1>
-            <div class="reaction-container">
-                <div class="reaction-splash" id="reactionSplash"></div>
-                <button class="reaction-button" id="reactionButton">
-                    Click to start the Reaction time test!<br>
-                    <span class="reaction-rules">
-                        &lt; 200 ms = +2000 coins<br>
-                        &lt; 250 ms = +1000 coins<br>
-                        &gt; 250 ms = lose all coins
-                    </span>
-                </button>
-            </div>
+        <div id="contentArea">
+            <h1>Welcome!</h1>
+            <p>This is the home page - your landing page for the website.</p>
         </div>
     </main>
 
