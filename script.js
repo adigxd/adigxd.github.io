@@ -134,8 +134,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="home-location">RTP Area, NC</p>
                         <p class="home-email"><a href="mailto:adiguptaxd@gmail.com">adiguptaxd@gmail.com</a></p>
                         <hr class="home-divider">
-                        <p class="home-bio">Cloud Engineer <a href="https://www.auditor.nc.gov/">@NCOSA</a> by day</p>
-                        <p Graphics Engineer by night</p>
+                        <p class="home-bio">Cloud Engineer for the <a href="https://www.auditor.nc.gov/">NCOSA</a> by day</p>
+                        <p class="home-bio">Graphics Engineer by night</p>
+                        <hr class="home-divider">
                         <p class="home-bio">This site showcases professional and personal projects I've worked on ... hope you discover something useful about developing end-to-end solutions! =)</p>
                     </div>
                 </div>
