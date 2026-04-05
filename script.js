@@ -138,6 +138,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="home-bio">Graphics Engineer by night</p>
                         <hr class="home-divider">
                         <p class="home-bio">This site showcases professional and personal projects I've worked on ... hope you discover something useful about developing end-to-end solutions! =)</p>
+                        <hr class="home-divider">
+                        <p class="home-bio"><a href="https://github.com/adigxd">My GitHub</a> is more up-to-date with my current projects ...</p>
                     </div>
                 </div>
             `,
