@@ -134,8 +134,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         <p class="home-location">RTP Area, NC</p>
                         <p class="home-email"><a href="mailto:adiguptaxd@gmail.com">adiguptaxd@gmail.com</a></p>
                         <hr class="home-divider">
-                        <p class="home-bio">Hey! I'm Adi, a Software & Cloud Engineer excited about all things computing; from high-level systems architecture to low-level memory access techniques.</p>
-                        <p class="home-bio">Here, you'll find professional and personal projects I've worked on. I do hope you'll discover something useful about designing end-to-end solutions!</p>
+                        <p class="home-bio">Software & Cloud Engineer for the NCOSA ... Graphics Engineer in my free time</p>
+                        <p class="home-bio">This site showcases professional and personal projects I've worked on ... hope you discover something useful about developing end-to-end solutions! =)</p>
                     </div>
                 </div>
             `,
