@@ -1,9 +1,6 @@
 # Environment Variables
 .env
 
-# Extra Resources
-DIR-Resources/DIR-Extra/
-
 # Test Files
 TST-*
 

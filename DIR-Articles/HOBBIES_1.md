@@ -1,3 +1,0 @@
-[Repository](https://github.com/adigxd/Arena)
-
-Content coming soon...

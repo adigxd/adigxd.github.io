@@ -3,100 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adigxd - GitHub Pages</title>
+    <title>adigxd</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Uncial+Antiqua&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-    <!-- Header Banner -->
-    <header class="header-banner">
-        <div class="header-controls">
-            <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
-                <span class="toggle-icon">☰</span>
-            </button>
-            <button class="dark-mode-toggle" id="darkModeToggle" aria-label="Toggle dark mode">
-                <span class="dark-mode-switch">
-                    <span class="dark-mode-slider"></span>
-                </span>
-            </button>
-        </div>
-        <div class="header-icons">
-            <a href="https://linkedin.com/in/adigxd" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="LinkedIn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                    <rect x="2" y="9" width="4" height="12"></rect>
-                    <circle cx="4" cy="4" r="2"></circle>
-                </svg>
-            </a>
-            <a href="https://github.com/adigxd" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="GitHub">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                </svg>
-            </a>
+    <header class="site-header">
+        <div class="title-wrap">
+            <h1>adigxd</h1>
         </div>
     </header>
-
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-content">
-            <div class="sidebar-section">
-                <div class="section-header" data-section="welcome">
-                    <span>Welcome</span>
-                    <span class="section-arrow">▼</span>
-                </div>
-                <div class="section-subsections">
-                    <a href="#" class="subsection-link active" data-page="home">Home</a>
-                </div>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="section-header" data-section="2025">
-                    <span>2025 PROJECTS</span>
-                    <span class="section-arrow">▼</span>
-                </div>
-                <div class="section-subsections">
-                    <a href="#" class="subsection-link" data-page="biology-search-engine">Biology's Search Engine</a>
-                    <a href="#" class="subsection-link" data-page="aws-administrator">AWS Administrator</a>
-                    <a href="#" class="subsection-link" data-page="sharepoint-powerbi">SharePoint & Power BI Administrator</a>
-                    <a href="#" class="subsection-link" data-page="business-intelligence-webapp">Business Intelligence Web App</a>
-                    <a href="#" class="subsection-link" data-page="internal-survey-platform">Internal Survey Platform</a>
-                    <a href="#" class="subsection-link" data-page="alumni-outreach-platform">Alumni Outreach Platform</a>
-                </div>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="section-header" data-section="2024">
-                    <span>2024 PROJECTS</span>
-                    <span class="section-arrow">▼</span>
-                </div>
-                <div class="section-subsections">
-                    <a href="#" class="subsection-link" data-page="workato-aof">Workato: AOF</a>
-                </div>
-            </div>
-            
-            <div class="sidebar-section">
-                <div class="section-header" data-section="hobbies">
-                    <span>Hobbies</span>
-                    <span class="section-arrow">▼</span>
-                </div>
-                <div class="section-subsections">
-                    <a href="#" class="subsection-link" data-page="this-website">This Website</a>
-                    <a href="#" class="subsection-link" data-page="zmap">zmap</a>
-                    <a href="#" class="subsection-link" data-page="voxelbulb">Voxelbulb</a>
-                    <a href="#" class="subsection-link" data-page="arena">Arena</a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="main-content">
-        <div id="contentArea">
-            <h1>Welcome!</h1>
-            <p>This is the home page - your landing page for the website.</p>
-        </div>
-    </main>
-
+    <canvas id="mist-canvas" aria-label="Background mist effect"></canvas>
     <script src="script.js"></script>
 </body>
-</html> 
+</html>
