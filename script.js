@@ -141,7 +141,7 @@ function updateParticles() {
     let a = angle - particle.warpAngle;
     while (a > Math.PI) a -= Math.PI * 2;
     while (a < -Math.PI) a += Math.PI * 2;
-    particle.warpAngle += a * 0.04;
+    particle.warpAngle += a * 0.012;
     particle.x += Math.sin(performance.now() * 0.0014 + particle.noiseOffset) * 0.08;
     particle.y += Math.cos(performance.now() * 0.0012 + particle.noiseOffset) * 0.06;
 
