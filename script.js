@@ -5,7 +5,8 @@ const particles = [];
 let particleCount = 0;
 let fallOffset = 0;
 const mouse = { x: -9999, y: -9999 };
-const FALL_SPEED = 1.18;
+// Increased fall speed to reduce visible particle density
+const FALL_SPEED = 2.2;
 const FOG_TOP_COLOR = { r: 160, g: 200, b: 235 };
 const FOG_BOTTOM_COLOR = { r: 150, g: 230, b: 185 };
 
@@ -75,13 +76,15 @@ function createParticles() {
   const rows = Math.min(16, Math.max(10, Math.floor(height / 92)));
   const extraRows = 4;
   const totalRows = rows + extraRows;
-  particleCount = cols * totalRows;
+  const maxParticles = 192;
   const xSpacing = cols > 1 ? width / (cols - 1) : width;
   const spawnAbove = height * 0.28;
   const ySpacing = (height + spawnAbove) / totalRows;
+  let particlesCreated = 0;
 
   for (let row = 0; row < totalRows; row++) {
     for (let col = 0; col < cols; col++) {
+      if (particlesCreated >= maxParticles) break;
       const px = xSpacing * col + randomBetween(-xSpacing * 0.22, xSpacing * 0.22);
       const py = -spawnAbove + ySpacing * row + randomBetween(-ySpacing * 0.4, ySpacing * 0.4);
       const drift = randomBetween(0.025, 0.07);
@@ -93,72 +96,102 @@ function createParticles() {
         radius: randomBetween(260, 430),
         alpha: randomBetween(0.24, 0.42),
         hueShift: 0,
+        saturationShift: 0,
         drift,
         warp: 0,
         warpAngle: 0,
         noiseOffset: randomBetween(0, Math.PI * 2),
+        // per-particle autonomous hue/saturation cycle
+        hueAmp: randomBetween(0, 0), // will swing -hueAmp..+hueAmp
+        huePeriod: randomBetween(1.0, 2.0), // seconds per full swing
+        huePhase: 0, // start at default color (sin(0) === 0)
+        satAmp: randomBetween(0.00, 0.00), // saturation boost up to this
       });
+      particlesCreated += 1;
     }
+    if (particlesCreated >= maxParticles) break;
   }
+  particleCount = particlesCreated;
 }
 
-function updateParticles() {
+function updateParticles(dt, now) {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const spawnAbove = height * 0.45;
+  // frameScale preserves previous behavior at ~60fps: frameScale ~= dt*60
+  const frameScale = Math.min(3, (dt || (1 / 60)) * 60);
 
   particles.forEach((particle) => {
     const dx = particle.x - mouse.x;
     const dy = particle.y - mouse.y;
     const dist = Math.sqrt(dx * dx + dy * dy);
     const repelRadius = 320;
-    const repelStrength = 1.05;
+    const repelStrength = 1.85;
 
-    particle.vy += FALL_SPEED * 0.9;
+    particle.vy += FALL_SPEED * 0.9 * frameScale;
 
     if (dist < repelRadius) {
       const push = repelStrength * (1 - dist / repelRadius);
-      particle.vx += (dx / dist || 0) * push;
-      particle.vy += (dy / dist || 0) * push;
+      particle.vx += (dx / dist || 0) * push * frameScale;
+      particle.vy += (dy / dist || 0) * push * frameScale;
     }
 
-    particle.vx += (Math.random() - 0.5) * particle.drift;
-    particle.vy += (Math.random() - 0.5) * particle.drift * 0.7;
-    particle.vx *= 0.86;
-    particle.vy *= 0.86;
+    particle.vx += (Math.random() - 0.5) * particle.drift * frameScale;
+    particle.vy += (Math.random() - 0.5) * particle.drift * 0.7 * frameScale;
+    particle.vx *= Math.pow(0.86, frameScale);
+    particle.vy *= Math.pow(0.86, frameScale);
+
+    // Bottom-edge slowdown: dampen vertical velocity as circle approaches bottom
+    const bottomDist = height - particle.y;
+    const slowdownZone = 200;
+    if (bottomDist < slowdownZone) {
+      const slowdownFactor = Math.max(0.9375, (bottomDist / slowdownZone));
+      particle.vy *= Math.pow(slowdownFactor, frameScale);
+    }
 
     const proximity = Math.max(0, Math.min(1, (repelRadius - dist) / repelRadius));
-    const targetWarp = Math.min(1, Math.pow(proximity, 0.82) * 1.1);
+    const targetWarp = Math.min(3, Math.pow(proximity, 0.82) * 2.4);
     const warpGrow = 0.16;
-    const warpDecay = 0.02;
+    const warpDecay = 0.08;
+    const growStep = Math.min(1, warpGrow * frameScale);
+    const decayStep = Math.min(1, warpDecay * frameScale);
     if (targetWarp > particle.warp) {
-      particle.warp += (targetWarp - particle.warp) * warpGrow;
+      particle.warp += (targetWarp - particle.warp) * growStep;
     } else {
-      particle.warp += (targetWarp - particle.warp) * warpDecay;
+      particle.warp += (targetWarp - particle.warp) * decayStep;
     }
     // Smoothly interpolate warp angle to avoid instant snapping
     const angle = Math.atan2(dy, dx);
     let a = angle - particle.warpAngle;
     while (a > Math.PI) a -= Math.PI * 2;
     while (a < -Math.PI) a += Math.PI * 2;
-    particle.warpAngle += a * 0.012;
-    particle.x += Math.sin(performance.now() * 0.0014 + particle.noiseOffset) * 0.08;
-    particle.y += Math.cos(performance.now() * 0.0012 + particle.noiseOffset) * 0.06;
+    particle.warpAngle += a * 0.012 * frameScale;
+    // time-based gentle noise (scaled by frameScale so it feels consistent)
+    particle.x += Math.sin(now * 0.0014 + particle.noiseOffset) * 0.08 * frameScale;
+    particle.y += Math.cos(now * 0.0012 + particle.noiseOffset) * 0.06 * frameScale;
 
-    // Hue shift effect: quick on approach, slow fade when leaving
+    // Hue and saturation shift effect: quick on approach, slow fade when leaving
     const hueProximity = Math.max(0, Math.min(1, 1 - dist / repelRadius));
     const effect = Math.pow(hueProximity, 1.3); // stronger near mouse
     const targetHue = effect * 90; // shift hue by up to +90 degrees
+    const targetSaturation = effect * 0.4; // increase saturation by up to +0.4
     const upRate = 0.36;
     const downRate = 0.04;
+    const upStep = Math.min(1, upRate * frameScale);
+    const downStep = Math.min(1, downRate * frameScale);
     if (targetHue > particle.hueShift) {
-      particle.hueShift += (targetHue - particle.hueShift) * upRate;
+      particle.hueShift += (targetHue - particle.hueShift) * upStep;
     } else {
-      particle.hueShift += (targetHue - particle.hueShift) * downRate;
+      particle.hueShift += (targetHue - particle.hueShift) * downStep;
+    }
+    if (targetSaturation > particle.saturationShift) {
+      particle.saturationShift += (targetSaturation - particle.saturationShift) * upStep;
+    } else {
+      particle.saturationShift += (targetSaturation - particle.saturationShift) * downStep;
     }
 
-    particle.x += particle.vx;
-    particle.y += particle.vy;
+    particle.x += particle.vx * frameScale;
+    particle.y += particle.vy * frameScale;
 
     if (particle.x < -280) particle.x = width + 280;
     if (particle.x > width + 280) particle.x = -280;
@@ -171,6 +204,11 @@ function updateParticles() {
       particle.vy = randomBetween(0.08, 0.34);
       particle.alpha = randomBetween(0.18, 0.36);
       particle.radius = randomBetween(200, 360);
+        // reset autonomous hue/saturation cycle and start at default color
+        particle.hueAmp = randomBetween(20, 60);
+        particle.huePeriod = randomBetween(0.5, 2.0);
+        particle.huePhase = 0;
+        particle.satAmp = randomBetween(0.00, 0.25);
     }
   });
 }
@@ -191,15 +229,27 @@ function renderParticles() {
     const baseR = Math.round(FOG_TOP_COLOR.r + (FOG_BOTTOM_COLOR.r - FOG_TOP_COLOR.r) * yRatio);
     const baseG = Math.round(FOG_TOP_COLOR.g + (FOG_BOTTOM_COLOR.g - FOG_TOP_COLOR.g) * yRatio);
     const baseB = Math.round(FOG_TOP_COLOR.b + (FOG_BOTTOM_COLOR.b - FOG_TOP_COLOR.b) * yRatio);
-    // apply hue shift per particle
+    // apply hue and saturation shift per particle
     const [h, s, l] = rgbToHsl(baseR, baseG, baseB);
-    const hue = h + (particle.hueShift || 0);
-    const [r2, g2, b2] = hslToRgb(hue, s, l);
+    // autonomous cycle (time-based) for hue and saturation
+    const nowSec = performance.now() / 1000;
+    const period = particle.huePeriod || 1.0;
+    const theta = (nowSec * (2 * Math.PI) / period) + (particle.huePhase || 0);
+    const cycleHue = (particle.hueAmp || 0) * Math.sin(theta); // -amp..+amp
+    const cycleSat = (particle.satAmp || 0) * (Math.sin(theta) * 0.5 + 0.5); // 0..amp
+    const hue = h + (particle.hueShift || 0) + cycleHue;
+    const saturation = Math.min(1, s + (particle.saturationShift || 0) + cycleSat);
+    const [r2, g2, b2] = hslToRgb(hue, saturation, l);
     const color = { r: r2, g: g2, b: b2 };
-    const baseAlpha = particle.alpha * (0.54 + yRatio * 0.14);
+    // Fade out at extreme warp, otherwise maintain base alpha
+    let alphaFade = 1;
+    if (particle.warp > 1.5) {
+      alphaFade = Math.max(0, 1 - (particle.warp - 1.5) / 0.5);
+    }
+    const baseAlpha = particle.alpha * (0.54 + yRatio * 0.14) * alphaFade;
     const radius = particle.radius;
-    const scaleX = 1 - particle.warp * 0.42;
-    const scaleY = 1 + particle.warp * 0.26;
+    const scaleX = 1.0;
+    const scaleY = Math.min(1.5, 1 + particle.warp * 1.2);
 
     ctx.save();
     ctx.translate(particle.x, particle.y);
@@ -243,8 +293,12 @@ function renderParticles() {
   ctx.filter = 'none';
 }
 
-function animate() {
-  updateParticles();
+let __lastNow = performance.now();
+function animate(now) {
+  if (!now) now = performance.now();
+  const dt = Math.min(0.1, (now - (__lastNow || now)) / 1000);
+  __lastNow = now;
+  updateParticles(dt, now);
   renderParticles();
   requestAnimationFrame(animate);
 }
@@ -268,4 +322,4 @@ window.addEventListener('resize', onResize);
 
 resizeCanvas();
 createParticles();
-animate();
+requestAnimationFrame(animate);
